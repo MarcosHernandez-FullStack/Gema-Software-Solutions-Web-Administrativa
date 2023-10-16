@@ -19,5 +19,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::post('/getServicioAll', [ApiWebInformativaController::class, 'getServicioAll']);
+
+/* Alternativa */
+Route::get('/getHome', [ApiWebInformativaController::class, 'getHome']);
+
+Route::get('/getServicioPorId/{id}', [ApiWebInformativaController::class, 'getServicioPorId']);

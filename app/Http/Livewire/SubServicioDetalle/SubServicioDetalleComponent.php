@@ -89,7 +89,7 @@ class SubServicioDetalleComponent extends Component
         $this->validate();
          //GUARDAR FOTO
          if($this->ruta_foto){
-            $this->sub_servicio_detalle->ruta_foto = $this->ruta_foto->store('subserviciodetalles');
+            $this->sub_servicio_detalle->ruta_foto = $this->ruta_foto->store('public/subserviciodetalles');
         }
         $this->sub_servicio_detalle->save();
         session()->flash('message', 'Detalle de Sub servicio registrado con éxito');

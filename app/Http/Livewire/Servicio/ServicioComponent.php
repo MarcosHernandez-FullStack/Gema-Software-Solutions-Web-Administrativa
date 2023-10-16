@@ -88,7 +88,7 @@ class ServicioComponent extends Component
         $this->validate();
          //GUARDAR FOTO
          if($this->ruta_foto){
-            $this->servicio->ruta_foto = $this->ruta_foto->store('servicios');
+            $this->servicio->ruta_foto = $this->ruta_foto->store('public/servicios');
         }
         $this->servicio->save();
         session()->flash('message', 'Servicio registrado con éxito');
