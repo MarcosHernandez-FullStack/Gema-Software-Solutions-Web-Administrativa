@@ -5,6 +5,7 @@ use App\Http\Livewire\BienvenidoComponent;
 use App\Http\Livewire\Servicio\ServicioComponent;
 use App\Http\Livewire\SubServicio\SubServicioComponent;
 use App\Http\Livewire\SubServicioDetalle\SubServicioDetalleComponent;
+use App\Http\Livewire\InicioSesion\InicioSesionComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,8 +17,8 @@ use App\Http\Livewire\SubServicioDetalle\SubServicioDetalleComponent;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', BienvenidoComponent::class)->name('bienvenido');
+Route::get('/', InicioSesionComponent::class)->name('iniciosesion');
+Route::get('/bienvenido', BienvenidoComponent::class)->name('bienvenido');
 Route::get('/servicios', ServicioComponent::class)->name('servicios');
 Route::get('/subservicios/{servicio_id}', SubServicioComponent::class)->name('subservicios');
 Route::get('/subserviciosdetalle/{sub_servicio_id}', SubServicioDetalleComponent::class)->name('subserviciodetalles');

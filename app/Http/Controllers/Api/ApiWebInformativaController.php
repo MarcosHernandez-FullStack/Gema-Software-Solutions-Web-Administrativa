@@ -34,9 +34,11 @@ class ApiWebInformativaController extends Controller
                 return [
                     "id" => $servicio->id,
                     "descripcion" => $servicio->descripcion,
-                    "detalle_descripcion" => $servicio->detalle_descripcion,
+                    "detalle_descripcion_resumida" => $servicio->detalle_descripcion_resumida,
+                    "detalle_descripcion_amplia" => $servicio->detalle_descripcion_amplia,
                     "estado" => $servicio->estado,
-                    "ruta_foto" => "http://127.0.0.1:8000" . Storage::url($servicio->ruta_foto),
+                    "ruta_foto_principal" =>  env("APP_URL") . Storage::url($servicio->ruta_foto_principal),
+                    "ruta_foto_detalle" =>  env("APP_URL") . Storage::url($servicio->ruta_foto_detalle),
 
                     /* "ruta_foto" => env("APP_URL") . "storage/" . $servicio->ruta_foto, */
                 ];
@@ -46,18 +48,19 @@ class ApiWebInformativaController extends Controller
                 return [
                     "id" => $proyecto->id,
                     "descripcion" => $proyecto->descripcion,
+                    "servicio_id" => $proyecto->servicio->id,
                     "servicio" => $proyecto->servicio->descripcion,
                     "empresa_cliente" => $proyecto->empresa_cliente,
                     "fecha_implementacion" => $fecha_implementacion,
                     "estado" => $proyecto->estado,
-                    "ruta_foto" => "http://127.0.0.1:8000" . Storage::url($proyecto->ruta_foto),
+                    "ruta_foto" =>  env("APP_URL") . Storage::url($proyecto->ruta_foto),
 
                     "sub_servicio_detalle" => $proyecto->sub_servicio_detalles->map(function ($detalle) {
                         return [
                             "id" => $detalle->id,
                             "estado" => $detalle->estado,
                             "descripcion" => $detalle->descripcion,
-                            "ruta_foto" =>  "http://127.0.0.1:8000" . Storage::url($detalle->ruta_foto),
+                            "ruta_foto" =>   env("APP_URL") . Storage::url($detalle->ruta_foto),
                         ];
                     }),
 
@@ -81,9 +84,11 @@ class ApiWebInformativaController extends Controller
             "servicio" => [
                 "id" => $servicio->id,
                 "descripcion" => $servicio->descripcion,
-                "detalle_descripcion" => $servicio->detalle_descripcion,
+                "detalle_descripcion_amplia" => $servicio->detalle_descripcion_amplia,
                 "estado" => $servicio->estado,
-                "ruta_foto" => "http://127.0.0.1:8000" . Storage::url($servicio->ruta_foto)
+                "ruta_foto_principal" =>  env("APP_URL") . Storage::url($servicio->ruta_foto_principal),
+                "ruta_foto_detalle" =>  env("APP_URL") . Storage::url($servicio->ruta_foto_detalle),
+                "beneficios" => $servicio->beneficios
             ],
 
             "listaServicios" => $listaServicios->map(function ($servicioItem) use ($servicio) {
@@ -105,14 +110,14 @@ class ApiWebInformativaController extends Controller
                     "empresa_cliente" => $proyecto->empresa_cliente,
                     "fecha_implementacion" => $fecha_implementacion,
                     "estado" => $proyecto->estado,
-                    "ruta_foto" => "http://127.0.0.1:8000" . Storage::url($proyecto->ruta_foto),
+                    "ruta_foto" =>  env("APP_URL") . Storage::url($proyecto->ruta_foto),
 
                     "sub_servicio_detalle" => $proyecto->sub_servicio_detalles->map(function ($detalle) {
                         return [
                             "id" => $detalle->id,
                             "estado" => $detalle->estado,
                             "descripcion" => $detalle->descripcion,
-                            "ruta_foto" =>  "http://127.0.0.1:8000" . Storage::url($detalle->ruta_foto),
+                            "ruta_foto" =>   env("APP_URL") . Storage::url($detalle->ruta_foto),
                         ];
                     }),
 
