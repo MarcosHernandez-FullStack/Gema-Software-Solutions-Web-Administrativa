@@ -77,7 +77,7 @@ class SubServicioDetalleComponent extends Component
 
     public function render()
     {
-        $sub_servicio_detalles=SubServicioDetalle::where('estado','=','ACTIVO')->get();
+        $sub_servicio_detalles=SubServicioDetalle::where('estado','=','ACTIVO')->where('sub_servicio_id','=',$this->sub_servicio_id)->get();
         $sub_servicio=SubServicio::find($this->sub_servicio_id);
         return view('livewire.sub-servicio-detalle.sub-servicio-detalle-component',compact('sub_servicio_detalles','sub_servicio'))
                 ->extends('layouts.principal')
@@ -89,7 +89,7 @@ class SubServicioDetalleComponent extends Component
         $this->validate();
          //GUARDAR FOTO
          if($this->ruta_foto){
-            $this->sub_servicio_detalle->ruta_foto = $this->ruta_foto->store('subserviciodetalles');
+            $this->sub_servicio_detalle->ruta_foto = $this->ruta_foto->store('public/subserviciodetalles');
         }
         $this->sub_servicio_detalle->save();
         session()->flash('message', 'Detalle de Sub servicio registrado con éxito');
