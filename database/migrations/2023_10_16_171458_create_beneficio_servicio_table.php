@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateServicioTable extends Migration
+class CreateBeneficioServicioTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateServicioTable extends Migration
      */
     public function up()
     {
-        Schema::create('servicio', function (Blueprint $table) {
+        Schema::create('beneficio_servicio', function (Blueprint $table) {
             $table->id();
-            $table->string('descripcion')->unique();
+            $table->foreignId('beneficio_id')->constrained('beneficio');
+            $table->foreignId('servicio_id')->constrained('servicio');
             $table->enum('estado', ['ACTIVO', 'INACTIVO'])->default('ACTIVO');
-            $table->string('ruta_foto_principal')->nullable();
-            $table->string('ruta_foto_detalle')->nullable();
-            $table->string('detalle_descripcion_resumida');
-            $table->text('detalle_descripcion_amplia');
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ class CreateServicioTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('servicio');
+        Schema::dropIfExists('beneficio_servicio');
     }
 }

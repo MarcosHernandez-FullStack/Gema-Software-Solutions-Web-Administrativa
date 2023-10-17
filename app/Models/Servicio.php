@@ -16,4 +16,8 @@ class Servicio extends Model
     {
         return $this->hasMany(SubServicio::class);
     }
+    public function beneficios()
+    {
+        return $this->belongsToMany(Beneficio::class, 'beneficio_servicio', 'servicio_id', 'beneficio_id');
+    }
 }
