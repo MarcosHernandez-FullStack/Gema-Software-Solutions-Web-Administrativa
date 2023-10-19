@@ -14,7 +14,7 @@ class ServicioComponent extends Component
 {
 
     use WithPagination, WithFileUploads;
-    public $servicio,$ruta_foto_principal,$ruta_foto_detalle,$beneficios_collection,$beneficio_id=-1;
+    public $servicio,$ruta_foto_principal,$ruta_foto_secundaria,$beneficios_collection,$beneficio_id=-1;
     public $search, $sort, $direction;
     public $form, $vista;
     public $paginacion, $paginationTheme;
@@ -39,11 +39,11 @@ class ServicioComponent extends Component
     //FUNCION PARA REGISTRAR LAS VALIDACIONES DINAMICAS
     protected function rules(){
         return [
-           'servicio.descripcion' => 'required',
-           'servicio.detalle_descripcion_amplia' => 'required',
-           'servicio.detalle_descripcion_resumida' => 'required',
+           'servicio.nombre' => 'required',
+           'servicio.descripcion_resumida' => 'required',
+           'servicio.descripcion_amplia' => 'required',
            'ruta_foto_principal' => 'required|image|max:2048',
-           'ruta_foto_detalle' => 'required|image|max:2048',
+           'ruta_foto_secundaria' => 'required|image|max:2048',
 
         ];
    }
@@ -51,14 +51,14 @@ class ServicioComponent extends Component
    //PROPIEDAD PARA PERSONALIZAR MENSAJES DE VALIDACION
    protected $messages = [
        'servicio.descripcion.required' => 'La descripcion es requerida',
-       'servicio.detalle_descripcion_amplia.required' => 'El detalle de la descripcion amplia es requerida',
-       'servicio.detalle_descripcion_resumida.required' => 'El detalle de la descripcion resumida es requerida',
+       'servicio.descripcion_resumida.required' => 'El detalle de la descripcion resumida es requerida',
+       'servicio.descripcion_amplia.required' => 'El detalle de la descripcion amplia es requerida',
        'ruta_foto_principal.required' => 'La foto principal es requerida',
        'ruta_foto_principal.image' => 'El campo foto principal debe ser una imagen',
        'ruta_foto_principal.max' => 'El campo foto principal debe tener un tamaño maximo de 2MB',
-       'ruta_foto_detalle.required' => 'La foto del detalle es requerida',
-       'ruta_foto_detalle.image' => 'El campo foto del detalle debe ser una imagen',
-       'ruta_foto_detalle.max' => 'El campo foto del detalle debe tener un tamaño maximo de 2MB',
+       'ruta_foto_secundaria.required' => 'La foto del detalle es requerida',
+       'ruta_foto_secundaria.image' => 'El campo foto del detalle debe ser una imagen',
+       'ruta_foto_secundaria.max' => 'El campo foto del detalle debe tener un tamaño maximo de 2MB',
    ];
 
    //FUNCION PARA MOSTRAR ERRORES DE VALIDACION EN TIEMPO REAL
@@ -98,9 +98,9 @@ class ServicioComponent extends Component
     public function save(){
         $this->validate();
          //GUARDAR FOTO
-         if($this->ruta_foto_principal && $this->ruta_foto_detalle){
+         if($this->ruta_foto_principal && $this->ruta_foto_secundaria){
             $this->servicio->ruta_foto_principal = $this->ruta_foto_principal->store('public/servicios/principal');
-            $this->servicio->ruta_foto_detalle = $this->ruta_foto_detalle->store('public/servicios/detalle');
+            $this->servicio->ruta_foto_secundaria = $this->ruta_foto_secundaria->store('public/servicios/secundaria');
         }
         $servicioCreado= new Servicio();
         $servicioCreado=$this->servicio;
@@ -131,7 +131,7 @@ class ServicioComponent extends Component
     }
 
     //FUNCION PARA REDIRIGIR AL SUBSERVICIO
-    public function rediregirSubservicio($servicio_id){
+    public function rediregirProyectos($servicio_id){
         return redirect()->route('subservicios', ['servicio_id' => $servicio_id]);
     }
 }

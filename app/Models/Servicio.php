@@ -12,9 +12,9 @@ class Servicio extends Model
     protected $table = 'servicio';
     protected $guarded = [];
 
-    public function sub_servicios()
+    public function proyectos()
     {
-        return $this->hasMany(SubServicio::class);
+        return $this->hasMany(Proyecto::class);
     }
     public function beneficios()
     {
