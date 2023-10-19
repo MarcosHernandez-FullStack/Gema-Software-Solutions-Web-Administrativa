@@ -86,7 +86,7 @@ class ServicioComponent extends Component
 
     public function render()
     {
-        $servicios=Servicio::where('estado','=','ACTIVO')->paginate($this->paginacion);
+        $servicios=Servicio::all();
         $beneficios=Beneficio::where('estado','=','ACTIVO')->get();
         return view('livewire.servicio.servicio-component', compact('servicios','beneficios'))
                 ->extends('layouts.principal')
@@ -132,6 +132,6 @@ class ServicioComponent extends Component
 
     //FUNCION PARA REDIRIGIR AL SUBSERVICIO
     public function rediregirProyectos($servicio_id){
-        return redirect()->route('subservicios', ['servicio_id' => $servicio_id]);
+        return redirect()->route('proyectos', ['servicio_id' => $servicio_id]);
     }
 }
