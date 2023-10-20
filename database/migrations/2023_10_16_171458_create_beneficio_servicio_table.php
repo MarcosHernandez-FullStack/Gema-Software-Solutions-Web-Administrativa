@@ -17,7 +17,7 @@ class CreateBeneficioServicioTable extends Migration
             $table->id();
             $table->foreignId('beneficio_id')->constrained('beneficio');
             $table->foreignId('servicio_id')->constrained('servicio');
-            $table->enum('estado', ['ACTIVO', 'INACTIVO'])->default('ACTIVO');
+            $table->enum('estado', [0, 1])->default(1);
             $table->timestamps();
         });
     }

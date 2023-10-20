@@ -18,7 +18,7 @@ class CreateEmpresaTable extends Migration
             $table->string('ruc')->unique();
             $table->string('razon_social')->unique();
             $table->string('email')->unique();
-            $table->enum('estado', ['ACTIVO', 'INACTIVO'])->default('ACTIVO');
+            $table->enum('estado', [0, 1])->default(1);
             $table->timestamps();
         });
     }

@@ -44,7 +44,7 @@
                             <td>{{$proyecto->fecha_implementacion}}</td>                       
                             <td>{{$proyecto->empresa->razon_social}}</td>
                             <td>{{$proyecto->nombre}}</td>           
-                            <td><span role="button" class="badge bg-{{ $proyecto->estado == 'ACTIVO' ? 'success' : 'warning' }} p-2" >{{$proyecto->estado}}</span></td>
+                            <td><span role="button" class="badge bg-{{ $proyecto->estado == 1 ? 'success' : 'warning' }} p-2" >{{ $proyecto->estado == 1 ? 'ACTIVO' : 'INACTIVO' }}</span></td>
                             <td><span role="button" class="badge bg-primary" {{-- wire:click='rediregirSubservicioDetalles({{ $proyecto->id }})' --}}>DETALLES</span></td>
                         </tr>
                     @empty
