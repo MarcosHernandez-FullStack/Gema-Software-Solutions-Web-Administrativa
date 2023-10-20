@@ -48,6 +48,25 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
+            @if ($foto_principal_guardada)
+            <div  class="form-group col-md-6">
+                <label class="form-label text-capitalize">
+                    Foto Principal Registrada 
+                </label>
+                <img src="{{Storage::url($foto_principal_guardada)}}" class="img-thumbnail w-100" alt="foto_guardada">
+            </div>
+            @endif
+
+            @if ($ruta_foto_principal)
+            <div  class="form-group col-md-6">
+                {{-- titulo de foto --}}
+                <label class="form-label text-capitalize">
+                    Foto Principal Nueva
+                </label>
+                <img src="{{ $ruta_foto_principal->temporaryUrl() }}" class="img-thumbnail w-100" alt="foto">
+            </div>
+            @endif
+
 
             <div class="form-group">
                 <label for="foto" class="form-label text-capitalize">
@@ -59,9 +78,64 @@
                 @enderror
             </div>
 
+            @if ($foto_secundaria_guardada)
+            <div  class="form-group col-md-6">
+                <label class="form-label text-capitalize">
+                    Foto Secundaria Registrada 
+                </label>
+                <img src="{{Storage::url($foto_secundaria_guardada)}}" class="img-thumbnail w-100" alt="foto_guardada">
+            </div>
+            @endif
+
+            @if ($ruta_foto_secundaria)
+            <div  class="form-group col-md-6">
+                {{-- titulo de foto --}}
+                <label class="form-label text-capitalize">
+                    Foto Secundaria Nueva
+                </label>
+                <img src="{{ $ruta_foto_secundaria->temporaryUrl() }}" class="img-thumbnail w-100" alt="foto">
+            </div>
+            @endif
+
+            @if ($form == 'update')
+                <div class="form-group">
+                    <label for="descripcion" class="form-label">
+                        Beneficios Registrados
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <table class="table table-sm">
+                        <thead>
+                        <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Descripción</th>
+                            <th>Opción</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($servicio->beneficios as $key => $beneficio)
+                            <tr>
+                                <td>{{$key+1}}</td>
+                                <td>{{$beneficio->descripcion}}</td>
+                                <td><span role="button"
+                                    class="badge rounded-pill bg-{{ $servicio->estado == '1' ? 'success' : 'warning' }}" {{-- wire:click='cambiarEstado({{ $servicio->id }})' --}}>{{ $servicio->estado == '1' ? 'ACTIVO' : 'INACTIVO' }}</span></td>
+                            </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center">
+                                        <p>No hay registros</p>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+
             <div class="form-group">
                 <label for="descripcion" class="form-label">
-                    Beneficios
+                    Beneficios {{ $form == 'update' ? 'Nuevos' : ''}}
                 </label>
                 <select class="form-control form-control-sm rounded-pill" id="" wire:model='beneficio_id'>
                     <option value="-1">Seleccionar una opción</option>
@@ -84,11 +158,11 @@
                     </thead>
                     <tbody>
                         @forelse ($beneficios_collection as $key => $beneficio)
-                            <tr>
-                                <td>{{$key+1}}</td>
-                                <td>{{$beneficio->descripcion}}</td>
-                                <td><button class="btn btn-sm rounded-pill btn-danger" type="button" wire:click='deleteBeneficioCollection({{$key}})'><i class="fas fa-trash"></i> Eliminar</button></td>
-                            </tr>
+                        <tr>
+                            <td>{{$key+1}}</td>
+                            <td>{{$beneficio->descripcion}}</td>
+                            <td><button class="btn btn-sm rounded-pill btn-danger" type="button" wire:click='deleteBeneficioCollection({{$key}})'><i class="fas fa-trash"></i> Eliminar</button></td>
+                        </tr>
                         @empty
                             <tr>
                                 <td colspan="4" class="text-center">
@@ -96,13 +170,10 @@
                                 </td>
                             </tr>
                         @endforelse
-
-                      
-                      
                     </tbody>
-                  </table>
-            
+                </table>
             </div>
+           
 
 
 
@@ -116,3 +187,8 @@
         </div>
     </form>
 @endsection
+
+
+
+
+
