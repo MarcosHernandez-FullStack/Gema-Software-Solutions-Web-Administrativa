@@ -85,7 +85,7 @@ class ProyectoComponent extends Component
     {
         $proyectos=Proyecto::where('servicio_id','=',$this->servicio_id)->get();
         $servicio=Servicio::find($this->servicio_id);
-        $empresas=Empresa::where('estado','=','ACTIVO')->get();
+        $empresas=Empresa::where('estado','=',1)->get();
         return view('livewire.proyecto.proyecto-component', compact('proyectos','servicio','empresas'))
                 ->extends('layouts.principal')
                 ->section('content');
