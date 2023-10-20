@@ -14,7 +14,7 @@ class ServicioComponent extends Component
 {
 
     use WithPagination, WithFileUploads;
-    public $servicio,$ruta_foto_principal,$ruta_foto_secundaria,$beneficios_collection,$beneficio_id=-1;
+    public $servicio,$ruta_foto_principal,$ruta_foto_secundaria,$beneficios_collection,$beneficio_id=-1,$foto_principal_guardada,$foto_secundaria_guardada;
     public $search, $sort, $direction;
     public $form, $vista;
     public $paginacion, $paginationTheme;
@@ -87,7 +87,7 @@ class ServicioComponent extends Component
     public function render()
     {
         $servicios=Servicio::all();
-        $beneficios=Beneficio::where('estado','=',1)->get();
+        $beneficios=Beneficio::where('estado','=','1')->get();
         return view('livewire.servicio.servicio-component', compact('servicios','beneficios'))
                 ->extends('layouts.principal')
                 ->section('content');
@@ -134,4 +134,26 @@ class ServicioComponent extends Component
     public function rediregirProyectos($servicio_id){
         return redirect()->route('proyectos', ['servicio_id' => $servicio_id]);
     }
+
+    //FUNCION PARA CAMBIAR EL ESTADO DEL MODELO
+    public function cambiarEstado($id){
+        $servicio = Servicio::find($id);
+        if($servicio->estado == 1){
+            $servicio->update(['estado' => '0']);
+        }else{
+            $servicio->update(['estado' => '1']);
+        }
+        session()->flash('message', 'Estado del Servicio actualizado con éxito');    //ENVIAR MENSAJE DE CONFIRMACION
+    }
+
+    //FUNCION PARA CONSULTAR EN BASE DE DATOS Y LLENAR LOS CAMPOS DEL FORMULARIO
+    public function edit($id){
+        $this->showModal("form", "update");
+        $this->servicio=Servicio::find($id);
+        $this->foto_principal_guardada = $this->servicio->ruta_foto_principal;
+        $this->foto_secundaria_guardada = $this->servicio->ruta_foto_secundaria;
+        /* dd($id); */
+    }
+
+
 }
