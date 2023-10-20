@@ -52,7 +52,7 @@
                                                 <td><img src="{{Storage::url($servicio->ruta_foto_principal)}}" class="img-thumbnail w-100" alt="no_hay_imagen"></td>
                                                 <td>{{ $servicio->descripcion_resumida }}</td>
                                                 <td><span role="button"
-                                                        class="badge rounded-pill bg-{{ $servicio->estado == 'ACTIVO' ? 'success' : 'warning' }}">{{ $servicio->estado }}</span>
+                                                        class="badge rounded-pill bg-{{ $servicio->estado == 1 ? 'success' : 'warning' }}">{{ $servicio->estado == 1 ? 'ACTIVO' : 'INACTIVO' }}</span>
                                                 </td>
                                                 <td><span role="button" class="badge rounded-pill bg-info"
                                                         wire:click='rediregirProyectos({{ $servicio->id }})'>PROYECTOS</span></td>
