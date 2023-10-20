@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\BienvenidoComponent;
 use App\Http\Livewire\Servicio\ServicioComponent;
-use App\Http\Livewire\SubServicio\SubServicioComponent;
+use App\Http\Livewire\Proyecto\ProyectoComponent;
 use App\Http\Livewire\SubServicioDetalle\SubServicioDetalleComponent;
 use App\Http\Livewire\InicioSesion\InicioSesionComponent;
 
@@ -20,5 +20,5 @@ use App\Http\Livewire\InicioSesion\InicioSesionComponent;
 Route::get('/', InicioSesionComponent::class)->name('iniciosesion');
 Route::get('/bienvenido', BienvenidoComponent::class)->name('bienvenido');
 Route::get('/servicios', ServicioComponent::class)->name('servicios');
-Route::get('/subservicios/{servicio_id}', SubServicioComponent::class)->name('subservicios');
+Route::get('/proyectos/{servicio_id}', ProyectoComponent::class)->name('proyectos');
 Route::get('/subserviciosdetalle/{sub_servicio_id}', SubServicioDetalleComponent::class)->name('subserviciodetalles');

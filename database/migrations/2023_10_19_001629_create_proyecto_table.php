@@ -17,9 +17,9 @@ class CreateProyectoTable extends Migration
             $table->id();
             $table->string('nombre');
             $table->enum('estado', ['ACTIVO', 'INACTIVO'])->default('ACTIVO');
-            $table->string('ruta_foto')->nullable();
+            $table->string('ruta_foto');
             $table->foreignId('servicio_id')->constrained('servicio');
-            $table->date('fecha_implementacion')->nullable();
+            $table->date('fecha_implementacion');
             $table->timestamps();
         });
     }

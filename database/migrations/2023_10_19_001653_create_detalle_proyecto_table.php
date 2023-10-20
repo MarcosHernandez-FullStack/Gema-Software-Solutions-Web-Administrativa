@@ -15,9 +15,9 @@ class CreateDetalleProyectoTable extends Migration
     {
         Schema::create('detalle_proyecto', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre')->unique();
+            $table->string('nombre');
             $table->enum('estado', ['ACTIVO', 'INACTIVO'])->default('ACTIVO');
-            $table->string('ruta_foto')->nullable();
+            $table->string('ruta_foto');
             $table->foreignId('proyecto_id')->constrained('proyecto');
             $table->timestamps();
         });
