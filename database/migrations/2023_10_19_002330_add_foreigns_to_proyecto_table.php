@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBeneficioTable extends Migration
+class AddForeignsToProyectoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateBeneficioTable extends Migration
      */
     public function up()
     {
-        Schema::create('beneficio', function (Blueprint $table) {
-            $table->id();
-            $table->string('descripcion')->unique();
-            $table->enum('estado', [0, 1])->default(1);
-            $table->timestamps();
+        Schema::table('proyecto', function (Blueprint $table) {
+            $table->foreignId('empresa_id')->nullable()->constrained('empresa');
         });
     }
 
@@ -28,6 +25,8 @@ class CreateBeneficioTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('beneficio');
+        Schema::table('proyecto', function (Blueprint $table) {
+            //
+        });
     }
 }

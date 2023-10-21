@@ -39,8 +39,8 @@
                                     <thead>
                                         <tr>
                                             <th rowspan="1" colspan="1">#</th>
-                                            <th rowspan="1" colspan="1">Descripción</th>
-                                            <th rowspan="1" colspan="1">Detalle resumido</th>
+                                            <th rowspan="1" colspan="1">Foto Principal</th>
+                                            <th rowspan="1" colspan="1">Descripción Resumida</th>
                                             <th rowspan="1" colspan="1">Estado</th>
                                             <th rowspan="1" colspan="1">Opciones</th>
                                         </tr>
@@ -49,14 +49,18 @@
                                         @forelse ($servicios as $key => $servicio)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ $servicio->descripcion }}</td>
-                                                <td>{{ $servicio->detalle_descripcion_resumida }}</td>
+                                                <td><img src="{{Storage::url($servicio->ruta_foto_principal)}}" class="img-thumbnail w-100" alt="no_hay_imagen"></td>
+                                                <td>{{ $servicio->descripcion_resumida }}</td>
                                                 <td><span role="button"
-                                                        class="badge rounded-pill bg-{{ $servicio->estado == 'ACTIVO' ? 'success' : 'warning' }}">{{ $servicio->estado }}</span>
+                                                        class="badge rounded-pill bg-{{ $servicio->estado == '1' ? 'success' : 'warning' }}" wire:click='cambiarEstado({{ $servicio->id }})'>{{ $servicio->estado == '1' ? 'ACTIVO' : 'INACTIVO' }}</span>
                                                 </td>
                                                 <td><span role="button" class="badge rounded-pill bg-info"
-                                                        wire:click='rediregirSubservicio({{ $servicio->id }})'>SUB
-                                                        SERVICIOS</span></td>
+                                                        wire:click='rediregirProyectos({{ $servicio->id }})'>PROYECTOS</span></td>
+                                                <td><button type="button" class="btn btn-warning btn-sm rounded-pill" data-toggle="modal"
+                                                    data-target="#modal_usuario" wire:click="edit({{ $servicio->id }})">
+                                                    EDITAR
+                                                </button></td>
+                                                
                                             </tr>
                                         @empty
                                             <tr>

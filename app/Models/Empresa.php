@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SubServicioDetalle extends Model
+class Empresa extends Model
 {
     use HasFactory;
-    protected $table = 'sub_servicio_detalle';
+    protected $table = 'empresa';
     protected $guarded = [];
 
-    public function sub_servicio()
+    public function proyectos()
     {
-        return $this->belongsTo(SubServicio::class);
+        return $this->hasMany(Proyecto::class);
     }
+
 }

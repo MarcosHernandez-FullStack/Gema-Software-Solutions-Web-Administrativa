@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BeneficioServicio extends Model
+class DetalleProyecto extends Model
 {
     use HasFactory;
-    protected $table = 'beneficio_servicio';
+    protected $table = 'detalle_proyecto';
     protected $guarded = [];
+
+    public function proyecto()
+    {
+        return $this->belongsTo(Proyecto::class);
+    }
 }

@@ -1,27 +1,28 @@
 <?php
 
-namespace App\Http\Livewire\SubServicioDetalle;
+namespace App\Http\Livewire\Proyecto;
 
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
-use App\Models\SubServicio;
-use App\Models\SubServicioDetalle;
+use App\Models\Proyecto;
+use App\Models\Servicio;
+use App\Models\Empresa;
 
-class SubServicioDetalleComponent extends Component
+class ProyectoComponent extends Component
 {
     use WithPagination, WithFileUploads;
-    public $sub_servicio_id,$sub_servicio_detalle,$ruta_foto;
+    public $servicio_id,$proyecto,$ruta_foto;
     public $search, $sort, $direction;
     public $form, $vista;
     public $paginacion, $paginationTheme;
 
 
     //CONSTRUCTOR EN DONDE SE INICIALIZAN VARIABLES
-    public function mount($sub_servicio_id)
+    public function mount($servicio_id)
     {
-        $this->sub_servicio_id=$sub_servicio_id;
+        $this->servicio_id=$servicio_id;
         $this->sort ='id';
         $this->direction ='asc';
         $this->form = 'create'; //create, update
@@ -38,15 +39,19 @@ class SubServicioDetalleComponent extends Component
     //FUNCION PARA REGISTRAR LAS VALIDACIONES DINAMICAS
     protected function rules(){
         return [
-           'sub_servicio_detalle.sub_servicio_id' => 'required',
-           'sub_servicio_detalle.descripcion' => 'required',
+           'proyecto.servicio_id' => 'required',
+           'proyecto.nombre' => 'required',
+           'proyecto.fecha_implementacion' => 'required',
+           'proyecto.empresa_id' => 'required',
            'ruta_foto' => 'required|image|max:2048',
         ];
    }
 
    //PROPIEDAD PARA PERSONALIZAR MENSAJES DE VALIDACION
    protected $messages = [
-       'sub_servicio_detalle.descripcion.required' => 'La descripcion es requerida',
+       'proyecto.nombre.required' => 'La nombre es requerida',
+       'proyecto.fecha_implementacion.required' => 'La fecha implementacion es requerida',
+       'proyecto.empresa_id.required' => 'La empresa cliente es requerida',
        'ruta_foto.required' => 'La foto es requerida',
        'ruta_foto.image' => 'El campo foto debe ser una imagen',
        'ruta_foto.max' => 'El campo foto debe tener un tamaño maximo de 2MB',
@@ -67,32 +72,34 @@ class SubServicioDetalleComponent extends Component
    public function showModal($vista, $form){
        $this->resetError();
        if($form == 'create'){
-           $this->sub_servicio_detalle = new SubServicioDetalle();
-           $this->sub_servicio_detalle->sub_servicio_id=$this->sub_servicio_id;
+           $this->proyecto = new Proyecto();
+           $this->proyecto->servicio_id=$this->servicio_id;
            $this->reset('ruta_foto');
        }
        $this->vista = $vista;
        $this->form = $form;
    }
 
+
     public function render()
     {
-        $sub_servicio_detalles=SubServicioDetalle::where('estado','=','ACTIVO')->where('sub_servicio_id','=',$this->sub_servicio_id)->get();
-        $sub_servicio=SubServicio::find($this->sub_servicio_id);
-        return view('livewire.sub-servicio-detalle.sub-servicio-detalle-component',compact('sub_servicio_detalles','sub_servicio'))
+        $proyectos=Proyecto::where('servicio_id','=',$this->servicio_id)->get();
+        $servicio=Servicio::find($this->servicio_id);
+        $empresas=Empresa::where('estado','=',1)->get();
+        return view('livewire.proyecto.proyecto-component', compact('proyectos','servicio','empresas'))
                 ->extends('layouts.principal')
                 ->section('content');
     }
 
-    //FUNCION PARA GUARDAR EN BASE DE DATOS
-    public function save(){
+     //FUNCION PARA GUARDAR EN BASE DE DATOS
+     public function save(){
         $this->validate();
          //GUARDAR FOTO
          if($this->ruta_foto){
-            $this->sub_servicio_detalle->ruta_foto = $this->ruta_foto->store('public/subserviciodetalles');
+            $this->proyecto->ruta_foto = $this->ruta_foto->store('public/proyectos');
         }
-        $this->sub_servicio_detalle->save();
-        session()->flash('message', 'Detalle de Sub servicio registrado con éxito');
+        $this->proyecto->save();
+        session()->flash('message', 'Proyecto registrado con éxito');
         $this->dispatchBrowserEvent('closeModal');
     }
 }

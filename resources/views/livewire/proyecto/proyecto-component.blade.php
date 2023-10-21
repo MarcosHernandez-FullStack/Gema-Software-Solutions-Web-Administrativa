@@ -1,11 +1,11 @@
 <div>
     <div class="row mb-2">
         <div class="col-6">
-            <h1>Sub Servicios de {{$servicio->descripcion}}</h1>
+            <h1>Proyectos de {{$servicio->nombre}}</h1>
         </div>
         <div class="col-6">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_usuario" wire:click="showModal('form', 'create')"> 
-                Nuevo Sub Servicio
+                Nuevo proyecto
             </button>
         </div>
 
@@ -28,22 +28,24 @@
                 <thead>
                   <tr>
                     <th style="width: 10px">#</th>
-                    <th>Descripción</th>
-                    <th>Cliente</th>
                     <th>Fecha Implementación</th>
+                    <th>Foto</th>
+                    <th>Empresa</th>
+                    <th>Nombre</th>
                     <th>Estado</th>
                     <th style="width: 40px">Opciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                    @forelse ($sub_servicios as $sub_servicio)
+                    @forelse ($proyectos as $key => $proyecto)
                         <tr>
-                            <td>1.</td>                            
-                            <td>{{$sub_servicio->descripcion}}</td>
-                            <td><span role="button" class="badge bg-{{ $sub_servicio->estado == 'ACTIVO' ? 'success' : 'warning' }} p-2" >{{$sub_servicio->estado}}</span></td>
-                            <td>{{$sub_servicio->empresa_cliente}}</td>
-                            <td>{{$sub_servicio->fecha_implementacion}}</td>
-                            <td><span role="button" class="badge bg-primary" wire:click='rediregirSubservicioDetalles({{ $sub_servicio->id }})'>DETALLES</span></td>
+                            <td>{{ $key + 1 }}</td>
+                            <td><img src="{{Storage::url($proyecto->ruta_foto)}}" class="img-thumbnail w-100" alt="no_hay_imagen"></td>    
+                            <td>{{$proyecto->fecha_implementacion}}</td>                       
+                            <td>{{$proyecto->empresa->razon_social}}</td>
+                            <td>{{$proyecto->nombre}}</td>           
+                            <td><span role="button" class="badge bg-{{ $proyecto->estado == '1' ? 'success' : 'warning' }} p-2" >{{ $proyecto->estado == '1' ? 'ACTIVO' : 'INACTIVO' }}</span></td>
+                            <td>@livewire("detalle-proyecto.detalle-proyecto-component", ['proyecto_id' => $proyecto->id])</td>
                         </tr>
                     @empty
                         <tr>
@@ -61,6 +63,6 @@
 
     </div>
    
-    @include("livewire.sub-servicio.$vista")
+    @include("livewire.proyecto.$vista")
 
 </div>
