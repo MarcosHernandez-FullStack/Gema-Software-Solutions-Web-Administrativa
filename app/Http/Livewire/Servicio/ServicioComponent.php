@@ -152,8 +152,9 @@ class ServicioComponent extends Component
         $this->servicio=Servicio::find($id);
         $this->foto_principal_guardada = $this->servicio->ruta_foto_principal;
         $this->foto_secundaria_guardada = $this->servicio->ruta_foto_secundaria;
-        /* dd($id); */
     }
+
+    
 
 
 }
