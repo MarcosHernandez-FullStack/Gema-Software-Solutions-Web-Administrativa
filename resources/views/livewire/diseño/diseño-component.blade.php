@@ -38,9 +38,9 @@
                         <div class="row my-1">
 
                             @forelse ($servicios as $key => $servicio)
-                                <div class="col-md-4 px-5">
+                                <div class="col-md-4 px-5 py-3">
                                     <!-- Widget: user widget style 1 -->
-                                    <div class="card card-widget widget-user shadow-lg" style="border-radius: 25px">
+                                    <div class="card card-widget widget-user shadow-lg" style="border-radius: 25px; height: 100%;">
                                         <!-- Add the bg color to the header using any of the bg-* classes -->
                                         <div class="widget-user-header text-white"
                                             style="background: url('{{ Storage::url($servicio->ruta_foto_principal) }}') center center;border-radius: 25px 25px 0 0;">
@@ -57,21 +57,12 @@
                                         </div>
                                         <div class="p-5">
                                             <div class="row">
+                                                <div class="col-12 text-center">
+                                                    <h5><strong> {{ $servicio->nombre }}</strong></h5>
+                                                </div>
                                                 <div class="col-12 my-2">
                                                     <h5 class="widget-user-desc text-left text-md">
                                                         {{ $servicio->descripcion_resumida }}</h5>
-                                                </div>
-                                                <div class="col-12 text-md my-2">
-                                                    <div>
-                                                        <h5><strong>Beneficios</strong></h5>
-                                                        <div class="">
-                                                            @forelse ($servicio->beneficios as $beneficio)
-                                                                <div>{{ $beneficio->descripcion }}</div>
-                                                            @empty
-                                                                <div>:3</div>
-                                                            @endforelse
-                                                        </div>
-                                                    </div>
                                                 </div>
                                                 <div class="col-12 my-2">
                                                     <div class="d-flex justify-content-between">

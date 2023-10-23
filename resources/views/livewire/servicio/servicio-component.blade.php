@@ -80,5 +80,6 @@
             </div>
         </div>
     </div>
+   {{--  {{ $servicios->links() }} --}}
     @include("livewire.servicio.$vista")
 </div>

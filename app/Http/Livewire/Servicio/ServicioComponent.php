@@ -86,7 +86,7 @@ class ServicioComponent extends Component
 
     public function render()
     {
-        $servicios=Servicio::all();
+        $servicios=Servicio::where('estado','=','1')->paginate($this->paginacion);
         $beneficios=Beneficio::where('estado','=','1')->get();
         return view('livewire.servicio.servicio-component', compact('servicios','beneficios'))
                 ->extends('layouts.principal')
