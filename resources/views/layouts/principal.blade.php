@@ -214,6 +214,12 @@
                with font-awesome or any other icon font library -->
          {{--  <li class="nav-header">MULTI LEVEL EXAMPLE</li> --}}
             <li class="nav-item">
+              <a href="{{ route('diseños') }}" class="nav-link">
+                <i class="fas fa-circle nav-icon"></i>
+                  <p>Diseños</p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a href="{{ route('servicios') }}" class="nav-link">
                 <i class="fas fa-circle nav-icon"></i>
                   <p>Servicios</p>

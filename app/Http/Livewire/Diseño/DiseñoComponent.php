@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Servicio;
+namespace App\Http\Livewire\Diseño;
 
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -10,17 +10,14 @@ use App\Models\Servicio;
 use App\Models\Beneficio;
 use Illuminate\Database\Eloquent\Collection;
 
-class ServicioComponent extends Component
+class DiseñoComponent extends Component
 {
 
-    use WithPagination;
-    use WithFileUploads;
+    use WithPagination, WithFileUploads;
     public $servicio,$ruta_foto_principal,$ruta_foto_secundaria,$beneficios_collection,$beneficio_id=-1,$foto_principal_guardada,$foto_secundaria_guardada;
     public $search, $sort, $direction;
     public $form, $vista;
-    protected $paginationTheme = 'bootstrap';
-    public $paginacion = 2;
-    /* public $paginacion, $paginationTheme; */
+    public $paginacion, $paginationTheme;
 
     //CONSTRUCTOR EN DONDE SE INICIALIZAN VARIABLES
     public function mount()
@@ -29,10 +26,9 @@ class ServicioComponent extends Component
         $this->direction ='asc';
         $this->form = 'create'; //create, update
         $this->vista = 'form'; //form
-       /*  $this->paginacion = 3;
-        $this->paginationTheme = 'bootstrap'; */
+        $this->paginacion = 5;
+        $this->paginationTheme = 'bootstrap';
         $this->beneficios_collection = new Collection();
-        $this->servicio=new Servicio();
     }
 
      //FUNCION PARA RESETEAR NUMERO DE PAGINACION
@@ -81,7 +77,7 @@ class ServicioComponent extends Component
        $this->resetError();
        if($form == 'create'){
            $this->servicio = new Servicio();
-           $this->reset('ruta_foto_principal','ruta_foto_secundaria');
+           $this->reset('ruta_foto_principal');
            $this->beneficios_collection = new Collection();
        }
        $this->vista = $vista;
@@ -90,10 +86,9 @@ class ServicioComponent extends Component
 
     public function render()
     {
-        $servicios=Servicio::where('nombre', 'like', '%'.$this->search.'%')->paginate($this->paginacion);
+        $servicios=Servicio::all();
         $beneficios=Beneficio::where('estado','=','1')->get();
-        $servicio_obtenido=Servicio::find($this->servicio->id);
-        return view('livewire.servicio.servicio-component', compact('servicios','beneficios','servicio_obtenido'))
+        return view('livewire.diseño.diseño-component', compact('servicios','beneficios'))
                 ->extends('layouts.principal')
                 ->section('content');
     }
@@ -155,40 +150,10 @@ class ServicioComponent extends Component
     public function edit($id){
         $this->showModal("form", "update");
         $this->servicio=Servicio::find($id);
-       /*  $this->ruta_foto_principal=$this->servicio->ruta_foto_principal;
-        $this->ruta_foto_secundaria=$this->servicio->ruta_foto_secundaria; */
         $this->foto_principal_guardada = $this->servicio->ruta_foto_principal;
         $this->foto_secundaria_guardada = $this->servicio->ruta_foto_secundaria;
-        $this->beneficio_id=-1;
-       /*  $this->reset('ruta_foto_principal','ruta_foto_secundaria'); */
+        /* dd($id); */
     }
-
-    public function update(){
-        /* if($this->servicio->) */
-       /*  if($this->ruta_foto_principal) 
-            $this->servicio->ruta_foto_principal = $this->ruta_foto_principal->store('public/servicios/principal');
-        else
-            $this->servicio->ruta_foto_principal=$this->servicio->ruta_foto_principal;
-        if($this->ruta_foto_secundaria) 
-            $this->servicio->ruta_foto_secundaria = $this->ruta_foto_secundaria->store('public/servicios/secundaria');
-        else
-            $this->servicio->ruta_foto_secundaria=$this->servicio->ruta_foto_secundaria; */
-
-        $this->validate();
-        if($this->ruta_foto_principal!=$this->servicio->ruta_foto_principal) $this->servicio->ruta_foto_principal = $this->ruta_foto_principal->store('public/servicios/principal');
-        if($this->ruta_foto_secundaria!=$this->servicio->ruta_foto_secundaria) $this->servicio->ruta_foto_secundaria = $this->ruta_foto_secundaria->store('public/servicios/principal');
-        $this->servicio->update();
-        session()->flash('message', 'Servicio actualizado con éxito');
-        $this->dispatchBrowserEvent('closeModal');
-    }
-
-    public function saveServicioBeneficio(){
-        $servicio=Servicio::find($this->servicio->id);
-        $beneficio=Beneficio::find($this->beneficio_id);
-        $servicio->beneficios()->attach($beneficio);
-    }
-
-    
 
 
 }

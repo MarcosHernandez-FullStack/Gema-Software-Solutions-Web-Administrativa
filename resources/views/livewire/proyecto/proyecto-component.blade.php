@@ -38,14 +38,27 @@
                 </thead>
                 <tbody>
                     @forelse ($proyectos as $key => $proyecto)
+                    
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td><img src="{{Storage::url($proyecto->ruta_foto)}}" class="img-thumbnail w-100" alt="no_hay_imagen"></td>    
                             <td>{{$proyecto->fecha_implementacion}}</td>                       
                             <td>{{$proyecto->empresa->razon_social}}</td>
                             <td>{{$proyecto->nombre}}</td>           
-                            <td><span role="button" class="badge bg-{{ $proyecto->estado == '1' ? 'success' : 'warning' }} p-2" >{{ $proyecto->estado == '1' ? 'ACTIVO' : 'INACTIVO' }}</span></td>
-                            <td>@livewire("detalle-proyecto.detalle-proyecto-component", ['proyecto_id' => $proyecto->id])</td>
+                            <td><span role="button" class="badge bg-{{ $proyecto->estado == '1' ? 'success' : 'warning' }} p-2" wire:click='cambiarEstado({{ $proyecto->id }})'>{{ $proyecto->estado == '1' ? 'ACTIVO' : 'INACTIVO' }}</span></td>
+                
+                            <td>
+                                @livewire("detalle-proyecto.detalle-proyecto-component", ['proyecto' =>  $proyecto], key("detalle-proyecto-$proyecto->id"))
+                            </td>
+                            <td>
+                            <button type="button"
+                            class="btn btn-sm btn-warning btn-sm rounded-pill"
+                            data-toggle="modal" data-target="#modal_usuario"
+                            wire:click="edit({{ $proyecto->id }})"><i
+                                class="fas fa-pen"></i>
+                            EDITAR
+                        </button>
+                            </td>
                         </tr>
                     @empty
                         <tr>
@@ -66,3 +79,85 @@
     @include("livewire.proyecto.$vista")
 
 </div>
+
+
+
+{{-- <div>
+    <div class="row mb-2">
+        <div class="col-12">
+            <div class="card shadow-lg m-0 px-2" style="border-radius: 25px">
+                <!-- /.card-header -->
+                <div class="card-body p-3">
+                    <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        @include('layouts.header-listado', 
+                        [
+                           
+                            'label' => 'Proyecto',
+                            'create_function' => "showModal('form', 'create')",
+                            'condition_message' => session()->has('message'),
+                            'find' => 'Buscar por nombre del proyecto'
+                        ]
+                        )
+                        <div class="row my-1">
+
+                            @forelse ($proyectos as $key => $proyecto)
+                                <div class="col-md-4 px-5 py-3">
+                                    <!-- Widget: user widget style 1 -->
+                                    <div class="card card-widget widget-user shadow-lg" style="border-radius: 25px">
+                                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                                        <div class="widget-user-header text-white"
+                                            style="background: url('{{ Storage::url($proyecto->ruta_foto) }}') center center;border-radius: 25px 25px 0 0;">
+                                            <div class="text-right">
+                                                <span role="button"
+                                                    class="badge rounded-pill text-sm bg-{{ $proyecto->estado == '1' ? 'success' : 'warning' }}"
+                                                    wire:click='cambiarEstado({{ $proyecto->id }})'>{{ $proyecto->estado == '1' ? 'ACTIVO' : 'INACTIVO' }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="widget-user-image">
+                                            <img class="img-circle" style="height: 90px;object-fit: cover;"
+                                                src="{{ Storage::url($proyecto->ruta_foto) }}"
+                                                alt="{{ $proyecto->nombre }}">
+                                        </div>
+                                        <div class="p-5">
+                                            <div class="row">
+                                                <div class="col-12 text-center">
+                                                    <h5><strong> {{ $proyecto->nombre }}</strong></h5>
+                                                </div>
+                                                <div class="col-12 my-2">
+                                                    <h5 class="widget-user-desc text-left text-md">Fecha implementación: {{ $proyecto->fecha_implementacion }}</h5>
+                                                </div>
+                                                <div class="col-12 my-2">
+                                                    <h5 class="widget-user-desc text-left text-md">Empresa cliente: {{ $proyecto->empresa->razon_social }}</h5>
+                                                </div>
+                                                <div class="col-12 my-2">
+                                                    <div class="d-flex justify-content-between">
+                                                        @livewire("detalle-proyecto.detalle-proyecto-component", ['proyecto_id' => $proyecto->id])
+                                                       <button type="button"
+                                                       class="btn btn-sm btn-warning btn-sm rounded-pill"
+                                                       data-toggle="modal" data-target="#modal_usuario"
+                                                       wire:click="edit({{ $proyecto->id }})"><i
+                                                           class="fas fa-pen"></i>
+                                                       EDITAR
+                                                   </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.widget-user -->
+                                </div>
+                            @empty
+
+                            @endforelse
+                        </div>
+                        @include('layouts.footer-listado')
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+    </div>
+    @include("livewire.proyecto.$vista")
+</div>
+
+ --}}

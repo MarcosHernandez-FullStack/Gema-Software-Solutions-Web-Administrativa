@@ -10,13 +10,18 @@ use App\Models\DetalleProyecto;
 class DetalleProyectoComponent extends Component
 {
     use WithFileUploads;
-    public $proyecto_id,$detalle_proyecto,$ruta_foto;
+    public $proyecto,$detalle_proyecto,$ruta_foto;
+   /*  protected $listeners=['getProyectoId' => 'setProyectoId'];
+
+    public function setProyectoId($proyecto_id){
+        $this->proyecto_id = $proyecto_id;
+    } */
     
     
    //CONSTRUCTOR EN DONDE SE INICIALIZAN VARIABLES
-   public function mount($proyecto_id)
+   public function mount($proyecto)
    {
-       $this->proyecto_id=$proyecto_id;
+       $this->proyecto=$proyecto;
        $this->detalle_proyecto = new DetalleProyecto();
    }
 
@@ -51,8 +56,8 @@ class DetalleProyectoComponent extends Component
     //FUNCION PARA RENDERIZAR COMPONENTE
     public function render()
     {
-        $proyecto=Proyecto::find($this->proyecto_id);
-        $detalles_proyecto=DetalleProyecto::where('proyecto_id','=',$this->proyecto_id)->get();
+        $proyecto=$this->proyecto;
+        $detalles_proyecto=DetalleProyecto::where('proyecto_id','=',$this->proyecto->id)->get();
         return view('livewire.detalle-proyecto.detalle-proyecto-component', compact('proyecto','detalles_proyecto'));
     }
 
@@ -60,7 +65,7 @@ class DetalleProyectoComponent extends Component
      //FUNCION PARA GUARDAR EN BASE DE DATOS
      public function save(){
         $this->validate();
-        $this->detalle_proyecto->proyecto_id=$this->proyecto_id;
+        $this->detalle_proyecto->proyecto_id=$this->proyecto->id;
          //GUARDAR FOTO
          if($this->ruta_foto){
             $this->detalle_proyecto->ruta_foto = $this->ruta_foto->store('public/detalles-proyectos');
