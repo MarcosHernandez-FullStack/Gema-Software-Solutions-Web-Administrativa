@@ -74,4 +74,9 @@ class DetalleProyectoComponent extends Component
         /* session()->flash('message', 'Detalle de Sub servicio registrado con éxito');
         $this->dispatchBrowserEvent('closeModal'); */
     }
+
+     //FUNCION PARA CONSULTAR EN BASE DE DATOS Y LLENAR LOS CAMPOS DEL FORMULARIO
+     public function edit($id){
+        $this->detalle_proyecto=DetalleProyecto::find($id);
+    }
 }

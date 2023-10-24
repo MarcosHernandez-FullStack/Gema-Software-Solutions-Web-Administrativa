@@ -9,6 +9,7 @@ use Livewire\WithFileUploads;
 use App\Models\Servicio;
 use App\Models\Beneficio;
 use Illuminate\Database\Eloquent\Collection;
+use App\Models\BeneficioServicio;
 
 class ServicioComponent extends Component
 {
@@ -187,6 +188,18 @@ class ServicioComponent extends Component
         $beneficio=Beneficio::find($this->beneficio_id);
         $servicio->beneficios()->attach($beneficio);
     }
+
+    public function cambiarEstadoBeneficioServicio($id)
+    {
+        $beneficio_servicio = BeneficioServicio::find($id);
+        if($beneficio_servicio->estado == 1){
+            $beneficio_servicio->update(['estado' => '0']);
+        }else{
+            $beneficio_servicio->update(['estado' => '1']);
+        }
+
+    }
+
 
     
 

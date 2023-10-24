@@ -10,4 +10,13 @@ class BeneficioServicio extends Model
     use HasFactory;
     protected $table = 'beneficio_servicio';
     protected $guarded = [];
+
+    public function beneficio()
+    {
+        return $this->belongsTo(Beneficio::class);
+    }
+    public function servicio()
+    {
+        return $this->belongsTo(Servicio::class);
+    }
 }
