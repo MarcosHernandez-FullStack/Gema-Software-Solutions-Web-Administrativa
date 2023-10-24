@@ -17,7 +17,7 @@ class ProyectoComponent extends Component
     public $search, $sort, $direction;
     public $form, $vista;
     protected $paginationTheme = 'bootstrap';
-    public $paginacion = 1;
+    public $paginacion = 2;
 
 
     //CONSTRUCTOR EN DONDE SE INICIALIZAN VARIABLES

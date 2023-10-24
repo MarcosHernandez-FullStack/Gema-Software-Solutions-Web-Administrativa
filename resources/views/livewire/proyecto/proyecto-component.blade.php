@@ -117,6 +117,7 @@
                                             <div class="row">
                                                 <div class="col-12 text-center">
                                                     <h5><strong> {{ $proyecto->nombre }}</strong></h5>
+                                                  
                                                 </div>
                                                 <div class="col-12 my-2">
                                                     <h5 class="widget-user-desc text-left text-md">Fecha implementación: {{ $proyecto->fecha_implementacion }}</h5>
@@ -124,18 +125,22 @@
                                                 <div class="col-12 my-2">
                                                     <h5 class="widget-user-desc text-left text-md">Empresa cliente: {{ $proyecto->empresa->razon_social }}</h5>
                                                 </div>
-                                                <div class="col-12 my-2">
-                                                    <div class="d-flex justify-content-between">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                       
                                                             @livewire("detalle-proyecto.detalle-proyecto-component", ['proyecto' =>  $proyecto], key("detalle-proyecto-$proyecto->id"))
-                                                        <button type="button"
-                                                        class="btn btn-sm btn-warning btn-sm rounded-pill"
-                                                        data-toggle="modal" data-target="#modal_usuario"
-                                                        wire:click="edit({{ $proyecto->id }})"><i
-                                                            class="fas fa-pen"></i>
-                                                            EDITAR
-                                                        </button>
+                                                    </div>
+                                                    <div class="col-6">               
+                                                            <button type="button"
+                                                            class="btn btn-sm btn-warning btn-sm rounded-pill"
+                                                            data-toggle="modal" data-target="#modal_usuario"
+                                                            wire:click="edit({{ $proyecto->id }})"><i
+                                                                class="fas fa-pen"></i>
+                                                                EDITAR
+                                                            </button>
                                                     </div>
                                                 </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
