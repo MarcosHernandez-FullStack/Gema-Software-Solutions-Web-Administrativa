@@ -1,5 +1,5 @@
 <div>  
-    <button type="button" class="btn btn-info btn-sm rounded-pill" data-toggle="modal" data-target="#modal_detalle_proyecto">Detalles</button>
+    <button type="button" class="btn btn-sm rounded-pill bg-info" data-toggle="modal" data-target="#modal_detalle_proyecto">Detalles</button>
     <div wire:ignore.self class="modal fade" id="modal_detalle_proyecto" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">

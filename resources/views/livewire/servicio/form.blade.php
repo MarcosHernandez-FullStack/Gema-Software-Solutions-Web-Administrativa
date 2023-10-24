@@ -1,6 +1,6 @@
 @extends('layouts.modal')
 @section('contenido_modal')
-    <form wire:submit.prevent="{{ $form == 'create' ? 'save' : 'update' }}">
+    <form>
         <div class="modal-header bg-info text-light">
             <h5 class="modal-title">
                 {{ $form == 'create' ? 'Crear' : 'Editar' }} Servicio
@@ -100,8 +100,15 @@
             @if ($form == 'update')
                 <div class="form-group">
                     <label for="descripcion" class="form-label">
-                        Beneficios Registrados
+                        Beneficios
                     </label>
+                    <select class="form-control form-control-sm rounded-pill" id="" wire:model='beneficio_id'>
+                        <option value="-1">Seleccionar una opción</option>
+                        @foreach ($beneficios as $beneficio)
+                            <option value="{{$beneficio->id}}">{{$beneficio->descripcion}}</option>
+                        @endforeach 
+                    </select>
+                    <button type="button" class="btn btn-sm btn-success rounded-pill" wire:click="saveServicioBeneficio()" @if ($beneficio_id==-1) disabled @endif>+ Agregar beneficio</button>
                 </div>
 
                 <div class="form-group">
@@ -114,7 +121,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                            @forelse ($servicio->beneficios as $key => $beneficio)
+                            @forelse ($servicio_obtenido->beneficios as $key => $beneficio)
                             <tr>
                                 <td>{{$key+1}}</td>
                                 <td>{{$beneficio->descripcion}}</td>
@@ -133,9 +140,10 @@
                 </div>
             @endif
 
+            @if ($form == 'save')
             <div class="form-group">
                 <label for="descripcion" class="form-label">
-                    Beneficios {{ $form == 'update' ? 'Nuevos' : ''}}
+                    Beneficios
                 </label>
                 <select class="form-control form-control-sm rounded-pill" id="" wire:model='beneficio_id'>
                     <option value="-1">Seleccionar una opción</option>
@@ -173,7 +181,7 @@
                     </tbody>
                 </table>
             </div>
-           
+            @endif
 
 
 
@@ -181,8 +189,8 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-sm rounded-pill btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button>
-            <button type="submit" class="btn btn-sm rounded-pill btn-info"
-                {{-- wire:click="{{ $form == 'create' ? 'save' : 'update' }}" --}}
+            <button type="button" class="btn btn-sm rounded-pill btn-info"
+                wire:click="{{ $form == 'create' ? 'save' : 'update' }}"
                 > <i class="fas fa-save"></i> {{ $form == 'create' ? 'Registrar' : 'Actualizar' }}</button>
         </div>
     </form>

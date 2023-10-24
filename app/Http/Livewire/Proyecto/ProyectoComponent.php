@@ -13,7 +13,7 @@ use App\Models\Empresa;
 class ProyectoComponent extends Component
 {
     use WithPagination, WithFileUploads;
-    public $servicio_id,$proyecto,$ruta_foto;
+    public $servicio_id,$proyecto,$ruta_foto,$foto_guardada;
     public $search, $sort, $direction;
     public $form, $vista;
     public $paginacion, $paginationTheme;
@@ -27,8 +27,9 @@ class ProyectoComponent extends Component
         $this->direction ='asc';
         $this->form = 'create'; //create, update
         $this->vista = 'form'; //form
-        $this->paginacion = 5;
+        $this->paginacion = 3;
         $this->paginationTheme = 'bootstrap';
+        $this->proyecto=new Proyecto();
     }
 
      //FUNCION PARA RESETEAR NUMERO DE PAGINACION
@@ -83,9 +84,10 @@ class ProyectoComponent extends Component
 
     public function render()
     {
-        $proyectos=Proyecto::where('servicio_id','=',$this->servicio_id)->get();
+        $proyectos=Proyecto::where('nombre', 'like', '%'.$this->search.'%')
+                            ->where('servicio_id','=',$this->servicio_id)->paginate($this->paginacion);
         $servicio=Servicio::find($this->servicio_id);
-        $empresas=Empresa::where('estado','=',1)->get();
+        $empresas=Empresa::where('estado','=','1')->get();
         return view('livewire.proyecto.proyecto-component', compact('proyectos','servicio','empresas'))
                 ->extends('layouts.principal')
                 ->section('content');
@@ -102,4 +104,33 @@ class ProyectoComponent extends Component
         session()->flash('message', 'Proyecto registrado con éxito');
         $this->dispatchBrowserEvent('closeModal');
     }
+
+    //FUNCION PARA CAMBIAR EL ESTADO DEL MODELO
+    public function cambiarEstado($id){
+        $proyecto = Proyecto::find($id);
+        if($proyecto->estado == 1){
+            $proyecto->update(['estado' => '0']);
+        }else{
+            $proyecto->update(['estado' => '1']);
+        }
+        session()->flash('message', 'Estado del Proyecto actualizado con éxito');    //ENVIAR MENSAJE DE CONFIRMACION
+    }
+
+    //FUNCION PARA CONSULTAR EN BASE DE DATOS Y LLENAR LOS CAMPOS DEL FORMULARIO
+    public function edit($id){
+        $this->showModal("form", "update");
+        $this->proyecto=Proyecto::find($id);
+        /* $this->ruta_foto=$this->proyecto->ruta_foto; */
+        $this->foto_guardada = $this->proyecto->ruta_foto;
+    }
+
+
+    public function update(){
+        $this->validate();
+        if($this->ruta_foto!=$this->proyecto->ruta_foto) $this->proyecto->ruta_foto = $this->ruta_foto->store('public/proyectos');
+        $this->proyecto->update();
+        session()->flash('message', 'Proyecto actualizado con éxito');
+        $this->dispatchBrowserEvent('closeModal');
+    }
+
 }
