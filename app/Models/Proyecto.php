@@ -25,4 +25,6 @@ class Proyecto extends Model
     {
         return $this->belongsTo(Empresa::class);
     }
+
+    
 }

@@ -38,6 +38,7 @@
                 </thead>
                 <tbody>
                     @forelse ($proyectos as $key => $proyecto)
+                    
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td><img src="{{Storage::url($proyecto->ruta_foto)}}" class="img-thumbnail w-100" alt="no_hay_imagen"></td>    
@@ -45,7 +46,10 @@
                             <td>{{$proyecto->empresa->razon_social}}</td>
                             <td>{{$proyecto->nombre}}</td>           
                             <td><span role="button" class="badge bg-{{ $proyecto->estado == '1' ? 'success' : 'warning' }} p-2" wire:click='cambiarEstado({{ $proyecto->id }})'>{{ $proyecto->estado == '1' ? 'ACTIVO' : 'INACTIVO' }}</span></td>
-                            <td>@livewire("detalle-proyecto.detalle-proyecto-component", ['proyecto_id' => $proyecto->id], key($proyecto->id))</td>
+                
+                            <td>
+                                @livewire("detalle-proyecto.detalle-proyecto-component", ['proyecto' =>  $proyecto], key("detalle-proyecto-$proyecto->id"))
+                            </td>
                             <td>
                             <button type="button"
                             class="btn btn-sm btn-warning btn-sm rounded-pill"

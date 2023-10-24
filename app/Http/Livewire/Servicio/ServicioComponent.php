@@ -13,11 +13,14 @@ use Illuminate\Database\Eloquent\Collection;
 class ServicioComponent extends Component
 {
 
-    use WithPagination, WithFileUploads;
+    use WithPagination;
+    use WithFileUploads;
     public $servicio,$ruta_foto_principal,$ruta_foto_secundaria,$beneficios_collection,$beneficio_id=-1,$foto_principal_guardada,$foto_secundaria_guardada;
     public $search, $sort, $direction;
     public $form, $vista;
-    public $paginacion, $paginationTheme;
+    protected $paginationTheme = 'bootstrap';
+    public $paginacion = 2;
+    /* public $paginacion, $paginationTheme; */
 
     //CONSTRUCTOR EN DONDE SE INICIALIZAN VARIABLES
     public function mount()
@@ -26,8 +29,8 @@ class ServicioComponent extends Component
         $this->direction ='asc';
         $this->form = 'create'; //create, update
         $this->vista = 'form'; //form
-        $this->paginacion = 3;
-        $this->paginationTheme = 'bootstrap';
+       /*  $this->paginacion = 3;
+        $this->paginationTheme = 'bootstrap'; */
         $this->beneficios_collection = new Collection();
         $this->servicio=new Servicio();
     }

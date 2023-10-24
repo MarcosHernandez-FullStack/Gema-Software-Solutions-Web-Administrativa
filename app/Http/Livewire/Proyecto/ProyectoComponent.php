@@ -37,6 +37,11 @@ class ProyectoComponent extends Component
         $this->resetPage();
     }
 
+   /*  public function updatedProyecto()
+    {
+        $this->emitTo('DetalleProyectoComponent', 'getProyectoId', $this->proyecto->id);
+    } */
+
     //FUNCION PARA REGISTRAR LAS VALIDACIONES DINAMICAS
     protected function rules(){
         return [
@@ -133,4 +138,8 @@ class ProyectoComponent extends Component
         $this->dispatchBrowserEvent('closeModal');
     }
 
+    /* public function pasarResultadoADetalleProyectoComponent($proyecto_id) {
+        return $proyecto_id;
+    }
+ */
 }

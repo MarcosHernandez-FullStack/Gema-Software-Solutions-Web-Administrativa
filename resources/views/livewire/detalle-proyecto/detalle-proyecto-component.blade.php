@@ -1,6 +1,6 @@
 <div>  
-    <button type="button" class="btn btn-sm rounded-pill bg-info" data-toggle="modal" data-target="#modal_detalle_proyecto">Detalles</button>
-    <div wire:ignore.self class="modal fade" id="modal_detalle_proyecto" style="display: none;" aria-hidden="true">
+    <button type="button" class="btn btn-sm rounded-pill bg-info" data-toggle="modal" data-target="#modal_detalle_proyecto-{{$proyecto->id}}">Detalles</button>
+    <div wire:ignore.self class="modal fade" id="modal_detalle_proyecto-{{$proyecto->id}}" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <form {{-- wire:submit.prevent="{{ $form == 'create' ? 'save' : 'update' }}" --}}>
@@ -32,7 +32,7 @@
                         </div>
 
                         <div class="form-group col-md-12">
-                            <div id="carouselExampleControls" class="carousel slide">
+                            <div id="carouselExampleControls-{{$proyecto->id}}" class="carousel slide">
                                 <div class="carousel-inner">
                                   @foreach ($detalles_proyecto as $index => $detalle_proyecto)
                                     <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
@@ -42,11 +42,11 @@
                                     </div>
                                   @endforeach
                                 </div>
-                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                <a class="carousel-control-prev" href="#carouselExampleControls-{{$proyecto->id}}" role="button" data-slide="prev">
                                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                   <span class="sr-only">Previous</span>
                                 </a>
-                                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                <a class="carousel-control-next" href="#carouselExampleControls-{{$proyecto->id}}" role="button" data-slide="next">
                                   <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                   <span class="sr-only">Next</span>
                                 </a>
