@@ -6,7 +6,10 @@
         de
         {{ $servicios->total() }} entradas
     </div>
-    <div class="col-sm-12 col-md-7">
-        {{-- {{ $servicios->links() }} --}}
+    <div class="col-sm-12 col-md-7 ">
+        <div class="float-right">
+            {{ $servicios->links() }}
+        </div>
+       
     </div>
 </div>
