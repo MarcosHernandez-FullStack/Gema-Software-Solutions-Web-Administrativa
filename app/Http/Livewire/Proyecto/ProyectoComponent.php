@@ -16,7 +16,8 @@ class ProyectoComponent extends Component
     public $servicio_id,$proyecto,$ruta_foto,$foto_guardada;
     public $search, $sort, $direction;
     public $form, $vista;
-    public $paginacion, $paginationTheme;
+    protected $paginationTheme = 'bootstrap';
+    public $paginacion = 2;
 
 
     //CONSTRUCTOR EN DONDE SE INICIALIZAN VARIABLES
@@ -27,8 +28,8 @@ class ProyectoComponent extends Component
         $this->direction ='asc';
         $this->form = 'create'; //create, update
         $this->vista = 'form'; //form
-        $this->paginacion = 3;
-        $this->paginationTheme = 'bootstrap';
+       /*  $this->paginacion = 3;
+        $this->paginationTheme = 'bootstrap'; */
         $this->proyecto=new Proyecto();
     }
 

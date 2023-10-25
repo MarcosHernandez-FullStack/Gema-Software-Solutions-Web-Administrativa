@@ -1,4 +1,4 @@
-<div>
+{{-- <div>
     <div class="row mb-2">
         <div class="col-6">
             <h1>Proyectos de {{$servicio->nombre}}</h1>
@@ -71,18 +71,18 @@
                 </tbody>
               </table>
         </div>
-
+        @include('layouts.footer-listado', ['elementosListado' => $proyectos])
        
 
     </div>
    
     @include("livewire.proyecto.$vista")
 
-</div>
+</div> --}}
 
 
 
-{{-- <div>
+<div>
     <div class="row mb-2">
         <div class="col-12">
             <div class="card shadow-lg m-0 px-2" style="border-radius: 25px">
@@ -103,7 +103,7 @@
                             @forelse ($proyectos as $key => $proyecto)
                                 <div class="col-md-4 px-5 py-3">
                                     <!-- Widget: user widget style 1 -->
-                                    <div class="card card-widget widget-user shadow-lg" style="border-radius: 25px">
+                                    <div class="card card-widget widget-user shadow-lg" style="border-radius: 25px;">
                                         <!-- Add the bg color to the header using any of the bg-* classes -->
                                         <div class="widget-user-header text-white"
                                             style="background: url('{{ Storage::url($proyecto->ruta_foto) }}') center center;border-radius: 25px 25px 0 0;">
@@ -113,15 +113,11 @@
                                                     wire:click='cambiarEstado({{ $proyecto->id }})'>{{ $proyecto->estado == '1' ? 'ACTIVO' : 'INACTIVO' }}</span>
                                             </div>
                                         </div>
-                                        <div class="widget-user-image">
-                                            <img class="img-circle" style="height: 90px;object-fit: cover;"
-                                                src="{{ Storage::url($proyecto->ruta_foto) }}"
-                                                alt="{{ $proyecto->nombre }}">
-                                        </div>
                                         <div class="p-5">
                                             <div class="row">
                                                 <div class="col-12 text-center">
                                                     <h5><strong> {{ $proyecto->nombre }}</strong></h5>
+                                                  
                                                 </div>
                                                 <div class="col-12 my-2">
                                                     <h5 class="widget-user-desc text-left text-md">Fecha implementación: {{ $proyecto->fecha_implementacion }}</h5>
@@ -129,18 +125,22 @@
                                                 <div class="col-12 my-2">
                                                     <h5 class="widget-user-desc text-left text-md">Empresa cliente: {{ $proyecto->empresa->razon_social }}</h5>
                                                 </div>
-                                                <div class="col-12 my-2">
-                                                    <div class="d-flex justify-content-between">
-                                                        @livewire("detalle-proyecto.detalle-proyecto-component", ['proyecto_id' => $proyecto->id])
-                                                       <button type="button"
-                                                       class="btn btn-sm btn-warning btn-sm rounded-pill"
-                                                       data-toggle="modal" data-target="#modal_usuario"
-                                                       wire:click="edit({{ $proyecto->id }})"><i
-                                                           class="fas fa-pen"></i>
-                                                       EDITAR
-                                                   </button>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                       
+                                                            @livewire("detalle-proyecto.detalle-proyecto-component", ['proyecto' =>  $proyecto], key("detalle-proyecto-$proyecto->id"))
+                                                    </div>
+                                                    <div class="col-6">               
+                                                            <button type="button"
+                                                            class="btn btn-sm btn-warning btn-sm rounded-pill"
+                                                            data-toggle="modal" data-target="#modal_usuario"
+                                                            wire:click="edit({{ $proyecto->id }})"><i
+                                                                class="fas fa-pen"></i>
+                                                                EDITAR
+                                                            </button>
                                                     </div>
                                                 </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -150,7 +150,7 @@
 
                             @endforelse
                         </div>
-                        @include('layouts.footer-listado')
+                        @include('layouts.footer-listado', ['elementosListado' => $proyectos])
                     </div>
                 </div>
                 <!-- /.card-body -->
@@ -160,4 +160,3 @@
     @include("livewire.proyecto.$vista")
 </div>
 
- --}}

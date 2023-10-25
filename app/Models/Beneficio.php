@@ -12,5 +12,10 @@ class Beneficio extends Model
     protected $table = 'beneficio';
     protected $guarded = [];
 
+    public function beneficios_servicios()
+    {
+        return $this->hasMany(BeneficioServicio::class);
+    }
+
     
 }

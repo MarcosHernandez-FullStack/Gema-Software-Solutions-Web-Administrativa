@@ -121,12 +121,12 @@
                         </tr>
                         </thead>
                         <tbody>
-                            @forelse ($servicio_obtenido->beneficios as $key => $beneficio)
+                            @forelse ($servicio_obtenido->beneficios_servicios as $key => $beneficio_servicio)
                             <tr>
                                 <td>{{$key+1}}</td>
-                                <td>{{$beneficio->descripcion}}</td>
+                                <td>{{$beneficio_servicio->beneficio->descripcion}}</td>
                                 <td><span role="button"
-                                    class="badge rounded-pill bg-{{ $servicio->estado == '1' ? 'success' : 'warning' }}" {{-- wire:click='cambiarEstado({{ $servicio->id }})' --}}>{{ $servicio->estado == '1' ? 'ACTIVO' : 'INACTIVO' }}</span></td>
+                                    class="badge rounded-pill bg-{{$beneficio_servicio->estado == '1' ? 'success' : 'warning' }}" wire:click='cambiarEstadoBeneficioServicio({{ $beneficio_servicio->id }})'>{{ $beneficio_servicio->estado == '1' ? 'ACTIVO' : 'INACTIVO' }}</span></td>
                             </tr>
                             @empty
                                 <tr>
@@ -140,7 +140,7 @@
                 </div>
             @endif
 
-            @if ($form == 'save')
+            @if ($form == 'create')
             <div class="form-group">
                 <label for="descripcion" class="form-label">
                     Beneficios
@@ -169,7 +169,7 @@
                         <tr>
                             <td>{{$key+1}}</td>
                             <td>{{$beneficio->descripcion}}</td>
-                            <td><button class="btn btn-sm rounded-pill btn-danger" type="button" wire:click='deleteBeneficioCollection({{$key}})'><i class="fas fa-trash"></i> Eliminar</button></td>
+                            <td><button class="btn btn-sm rounded-pill btn-danger" type="button" wire:click='deleteBeneficioCollection({{$key}})'><i class="fas fa-trash"></i></button></td>
                         </tr>
                         @empty
                             <tr>
