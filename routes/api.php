@@ -25,3 +25,5 @@ Route::post('/getServicioAll', [ApiWebInformativaController::class, 'getServicio
 Route::get('/getHome', [ApiWebInformativaController::class, 'getHome']);
 
 Route::get('/getServicioPorId/{id}', [ApiWebInformativaController::class, 'getServicioPorId']);
+
+Route::get('/getProyectos', [ApiWebInformativaController::class, 'getProyectos']);

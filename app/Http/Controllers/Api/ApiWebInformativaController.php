@@ -151,4 +151,46 @@ class ApiWebInformativaController extends Controller
             }),
         ]);
     }
+
+    public function getProyectos(Request $request)
+    {
+        $pagina = $request->input('pagina');
+        
+        $proyectos = Proyecto::where('estado', '=', '1')->orderBy('id', 'desc')->paginate(3,['*'], 'pagina', $pagina);
+
+        //return $ultimosProyectos->toJson();
+        return response()->json([
+            'res' => true,
+            'proyectos' => $proyectos->map(function ($proyecto) {
+                $fecha_implementacion = date('m/Y', strtotime($proyecto->fecha_implementacion));
+                return [
+                    "id" => $proyecto->id,
+                    "nombre" => $proyecto->nombre,
+                    "servicio_id" => $proyecto->servicio->id,
+                    //"empresa_id" => $proyecto->empresa_id,
+                    "fecha_implementacion" => $fecha_implementacion,
+                    "estado" => $proyecto->estado,
+                    "ruta_foto" =>  env("APP_URL") . Storage::url($proyecto->ruta_foto),
+                    
+                    "servicio" => $proyecto->servicio->nombre,
+                    "empresa_cliente" => $proyecto->empresa->razon_social,
+                    "sub_servicio_detalle" => $proyecto->detalles_proyecto->map(function ($detalle) {
+                        return [
+                            "id" => $detalle->id,
+                            "estado" => $detalle->estado,
+                            "nombre" => $detalle->nombre,
+                            "ruta_foto" =>   env("APP_URL") . Storage::url($detalle->ruta_foto),
+                            "proyecto_id"=>$detalle->proyecto_id,
+                        ];
+                    }),
+
+                ];
+            }),
+            'paginacion' => [
+                'actual' => $proyectos->currentPage(),
+                'total' => $proyectos->lastPage(),
+            ],
+        ], 200);
+       
+    }
 }
