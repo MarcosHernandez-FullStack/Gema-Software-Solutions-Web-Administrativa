@@ -103,7 +103,7 @@
                             @forelse ($proyectos as $key => $proyecto)
                                 <div class="col-md-4 px-5 py-3">
                                     <!-- Widget: user widget style 1 -->
-                                    <div class="card card-widget widget-user shadow-lg" style="border-radius: 25px;">
+                                    <div class="card card-widget widget-user shadow-lg" style="border-radius: 25px;height: 100%;position: relative;">
                                         <!-- Add the bg color to the header using any of the bg-* classes -->
                                         <div class="widget-user-header text-white"
                                             style="background: url('{{ Storage::url($proyecto->ruta_foto) }}') center center;border-radius: 25px 25px 0 0;">
@@ -125,14 +125,14 @@
                                                 <div class="col-12 my-2">
                                                     <h5 class="widget-user-desc text-left text-md">Empresa cliente: {{ $proyecto->empresa->razon_social }}</h5>
                                                 </div>
-                                                <div class="row">
+                                                <div class="row col-12">
                                                     <div class="col-6">
                                                        
                                                             @livewire("detalle-proyecto.detalle-proyecto-component", ['proyecto' =>  $proyecto], key("detalle-proyecto-$proyecto->id"))
                                                     </div>
                                                     <div class="col-6">               
                                                             <button type="button"
-                                                            class="btn btn-sm btn-warning btn-sm rounded-pill"
+                                                            class="btn btn-sm btn-warning btn-sm rounded-pill float-right"
                                                             data-toggle="modal" data-target="#modal_usuario"
                                                             wire:click="edit({{ $proyecto->id }})"><i
                                                                 class="fas fa-pen"></i>

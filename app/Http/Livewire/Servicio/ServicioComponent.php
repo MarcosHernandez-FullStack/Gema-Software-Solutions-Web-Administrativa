@@ -20,7 +20,7 @@ class ServicioComponent extends Component
     public $search, $sort, $direction;
     public $form, $vista;
     protected $paginationTheme = 'bootstrap';
-    public $paginacion = 2;
+    public $paginacion = 6;
     /* public $paginacion, $paginationTheme; */
 
     //CONSTRUCTOR EN DONDE SE INICIALIZAN VARIABLES

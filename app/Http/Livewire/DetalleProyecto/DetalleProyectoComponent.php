@@ -79,4 +79,11 @@ class DetalleProyectoComponent extends Component
      public function edit($id){
         $this->detalle_proyecto=DetalleProyecto::find($id);
     }
+     public function delete($id){
+        $detalle_proyecto=DetalleProyecto::find($id);
+        // if($detalle_proyecto->ruta_foto){
+        //     unlink(storage_path('app/'.$detalle_proyecto->ruta_foto));
+        // }
+        $detalle_proyecto->delete();
+    }
 }
