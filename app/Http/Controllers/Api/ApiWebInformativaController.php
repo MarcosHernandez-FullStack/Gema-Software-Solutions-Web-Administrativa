@@ -193,4 +193,5 @@ class ApiWebInformativaController extends Controller
         ], 200);
        
     }
+
 }
