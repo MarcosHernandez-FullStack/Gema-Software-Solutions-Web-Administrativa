@@ -27,3 +27,5 @@ Route::get('/getHome', [ApiWebInformativaController::class, 'getHome']);
 Route::get('/getServicioPorId/{id}', [ApiWebInformativaController::class, 'getServicioPorId']);
 
 Route::get('/getProyectos', [ApiWebInformativaController::class, 'getProyectos']);
+
+Route::get('/getProyectoPorId/{id}', [ApiWebInformativaController::class, 'getProyectoPorId']);
