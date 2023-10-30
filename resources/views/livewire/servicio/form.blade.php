@@ -9,8 +9,8 @@
                 <span aria-hidden="true">×</span>
             </button>
         </div>
-        <div class="modal-body">
-            <div class="form-group">
+        <div class="modal-body row">
+            <div class="form-group col-md-12">
                 <label for="nombre" class="form-label">
                     Nombre
                 </label>
@@ -19,7 +19,7 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-6">
                 <label for="descripcion" class="form-label">
                     Descripción resumida
                 </label>
@@ -29,7 +29,7 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-6">
                 <label for="descripcion" class="form-label">
                     Descripción amplia
                 </label>
@@ -39,7 +39,7 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-6">
                 <label for="foto" class="form-label text-capitalize">
                     Foto principal
                 </label>
@@ -68,7 +68,7 @@
             @endif
 
 
-            <div class="form-group">
+            <div class="form-group col-md-6">
                 <label for="foto" class="form-label text-capitalize">
                     Foto secundaria
                 </label>
@@ -98,7 +98,7 @@
             @endif
 
             @if ($form == 'update')
-                <div class="form-group">
+                <div class="form-group col-md-6">
                     <label for="descripcion" class="form-label">
                         Beneficios
                     </label>
@@ -111,7 +111,10 @@
                     <button type="button" class="btn btn-sm btn-success rounded-pill" wire:click="saveServicioBeneficio()" @if ($beneficio_id==-1) disabled @endif>+ Agregar beneficio</button>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group col-md-6">
+                    <label for="" class="form-label">
+                        Listado de Beneficios
+                    </label>
                     <table class="table table-sm">
                         <thead>
                         <tr>
@@ -141,7 +144,7 @@
             @endif
 
             @if ($form == 'create')
-            <div class="form-group">
+            <div class="form-group col-md-6">
                 <label for="descripcion" class="form-label">
                     Beneficios
                 </label>
@@ -155,7 +158,10 @@
                 <button type="button" class="btn btn-primary" wire:click="imprimir()">Imprimir</button>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col-md-6">
+                <label for="" class="form-label">
+                    Listado de Beneficios
+                </label>
                 <table class="table table-sm">
                     <thead>
                       <tr>

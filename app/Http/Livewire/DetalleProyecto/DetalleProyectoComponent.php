@@ -81,9 +81,16 @@ class DetalleProyectoComponent extends Component
     }
      public function delete($id){
         $detalle_proyecto=DetalleProyecto::find($id);
-        // if($detalle_proyecto->ruta_foto){
-        //     unlink(storage_path('app/'.$detalle_proyecto->ruta_foto));
-        // }
         $detalle_proyecto->delete();
+    }
+    //FUNCION PARA CAMBIAR EL ESTADO DEL MODELO
+    public function cambiarEstado($id){
+        $detalleproyecto = DetalleProyecto::find($id);
+        if($detalleproyecto->estado == 1){
+            $detalleproyecto->update(['estado' => '0']);
+        }else{
+            $detalleproyecto->update(['estado' => '1']);
+        }
+        session()->flash('message', 'Estado del Detalle Proyecto actualizado con éxito');    //ENVIAR MENSAJE DE CONFIRMACION
     }
 }
