@@ -140,7 +140,7 @@ class ApiWebInformativaController extends Controller
                         return [
                             "id" => $detalle->id,
                             "estado" => $detalle->estado,
-                            "descripcion" => $detalle->descripcion,
+                            "nombre" => $detalle->nombre,
                             "ruta_foto" =>   env("APP_URL") . Storage::url($detalle->ruta_foto),
                         ];
                     }),
