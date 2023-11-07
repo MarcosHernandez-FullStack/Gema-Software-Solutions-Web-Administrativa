@@ -8,7 +8,7 @@
 </div> --}}
 
 <div wire:ignore.self class="modal fade" id="modal_usuario" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         @yield('contenido_modal')
       </div>

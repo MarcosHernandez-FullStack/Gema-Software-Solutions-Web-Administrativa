@@ -16,6 +16,18 @@
                         </button>
                     </div>
                     <div class="modal-body row">
+                        <div class="form-group col-12">
+                            @if ($mensajeForm)
+                                <div class="row col-12 alert alert-{{$mensajeForm['color']}} alert-dismissible fade show" role="alert">
+                                    <div>
+                                        {{ $mensajeForm['message'] }}
+                                    </div>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" wire:click='resetearMensajeForm()'>
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
                         <div class="form-group col-md-5">
                             <label class="form-label text-capitalize">Nombre</label>
                             <input type="text" class="form-control" wire:model='detalle_proyecto.nombre'>
@@ -32,6 +44,7 @@
                             @enderror
                         </div>
                         <div class="form-group col-md-3">
+                            <br>
                             <button type="button" class="btn btn-success" wire:click="save()">+ Agregar</button>
                         </div>
 

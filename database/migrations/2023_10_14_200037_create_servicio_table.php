@@ -15,12 +15,12 @@ class CreateServicioTable extends Migration
     {
         Schema::create('servicio', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->string('nombre',27);
             $table->enum('estado', [0, 1])->default(1);
             $table->string('ruta_foto_principal');
             $table->string('ruta_foto_secundaria');
-            $table->string('descripcion_resumida');
-            $table->text('descripcion_amplia');
+            $table->string('descripcion_resumida',75);
+            $table->text('descripcion_amplia',725);
            /*  $table->foreignId('users_id')->constrained('users')->nullable(); */
             $table->timestamps();
         });

@@ -9,8 +9,8 @@
                 <span aria-hidden="true">×</span>
             </button>
         </div>
-        <div class="modal-body">
-            <div class="form-group">
+        <div class="modal-body row">
+            <div class="form-group col-md-6">
                 <label for="descripcion" class="form-label">
                     Nombre
                 </label>
@@ -19,7 +19,7 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-4">
                 <label for="descripcion" class="form-label">
                     Empresa cliente
                 </label>
@@ -33,7 +33,7 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-2">
                 <label for="descripcion" class="form-label">
                    Fecha Implementación
                 </label>
@@ -42,7 +42,7 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="form-group">
+            <div class="form-group col-12">
                 <label for="foto" class="form-label text-capitalize">
                     Foto
                 </label>
@@ -50,25 +50,26 @@
                 @error('ruta_foto')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
-            </div>
-            @if ($foto_guardada)
-                <div  class="form-group col-md-6">
-                    <label class="form-label text-capitalize">
-                        Foto Guardada 
-                    </label>
-                    <img src="{{Storage::url($foto_guardada)}}" class="img-thumbnail w-100" alt="foto_guardada">
+                <br>
+                <div class="row">
+                    <div class="col-md-6">
+                        @if ($foto_guardada)
+                            <label class="form-label text-capitalize">
+                                Foto Guardada 
+                            </label>
+                            <img src="{{Storage::url($foto_guardada)}}" class="img-thumbnail w-100" alt="foto_guardada">
+                        @endif
+                    </div>
+                    <div class="col-md-6">
+                        @if ($ruta_foto)
+                            <label class="form-label text-capitalize">
+                                Foto Nueva
+                            </label>
+                            <img src="{{ $ruta_foto->temporaryUrl() }}" class="img-thumbnail w-100" alt="foto">
+                        @endif
+                    </div>
                 </div>
-            @endif
-            @if ($ruta_foto)
-            <div  class="form-group col-md-6">
-                {{-- titulo de foto --}}
-                <label class="form-label text-capitalize">
-                    Foto Nueva
-                </label>
-                <img src="{{ $ruta_foto->temporaryUrl() }}" class="img-thumbnail w-100" alt="foto">
             </div>
-            @endif
-
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

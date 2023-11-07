@@ -47,27 +47,27 @@
                 @error('ruta_foto_principal')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
+                <br>
+                <div class="row">
+                    <div class="col-6">
+                        @if ($foto_principal_guardada)
+                        <label class="form-label text-capitalize">
+                            Foto Principal Registrada 
+                        </label>
+                        <img src="{{Storage::url($foto_principal_guardada)}}" class="img-thumbnail w-100" alt="foto_guardada">
+                        @endif
+                    </div>
+                    <div class="col-6">
+                        @if ($ruta_foto_principal /* instanceof \Livewire\TemporaryUploadedFile */)
+                        <label class="form-label text-capitalize">
+                            Foto Principal Nueva
+                        </label>
+                        <img src="{{ $ruta_foto_principal->temporaryUrl() }}" class="img-thumbnail w-100" alt="foto">
+                        @endif
+                    </div>
+                </div>        
             </div>
-            @if ($foto_principal_guardada)
-            <div  class="form-group col-md-6">
-                <label class="form-label text-capitalize">
-                    Foto Principal Registrada 
-                </label>
-                <img src="{{Storage::url($foto_principal_guardada)}}" class="img-thumbnail w-100" alt="foto_guardada">
-            </div>
-            @endif
-
-            @if ($ruta_foto_principal)
-            <div  class="form-group col-md-6">
-                {{-- titulo de foto --}}
-                <label class="form-label text-capitalize">
-                    Foto Principal Nueva
-                </label>
-                <img src="{{ $ruta_foto_principal->temporaryUrl() }}" class="img-thumbnail w-100" alt="foto">
-            </div>
-            @endif
-
-
+            
             <div class="form-group col-md-6">
                 <label for="foto" class="form-label text-capitalize">
                     Foto secundaria
@@ -76,29 +76,40 @@
                 @error('ruta_foto_secundaria')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
+                <br>
+                <div class="row">
+                    <div class="col-6">
+                        @if ($foto_secundaria_guardada)
+                        <label class="form-label text-capitalize">
+                            Foto Secundaria Registrada 
+                        </label>
+                        <img src="{{Storage::url($foto_secundaria_guardada)}}" class="img-thumbnail w-100" alt="foto_guardada">
+                        @endif
+                    </div>
+                    <div class="col-6">
+                        @if ($ruta_foto_secundaria /* instanceof \Livewire\TemporaryUploadedFile */)
+                        <label class="form-label text-capitalize">
+                            Foto Secundaria Nueva
+                        </label>
+                        <img src="{{ $ruta_foto_secundaria->temporaryUrl() }}" class="img-thumbnail w-100" alt="foto">
+                        @endif
+                    </div>
+                </div>
             </div>
-
-            @if ($foto_secundaria_guardada)
-            <div  class="form-group col-md-6">
-                <label class="form-label text-capitalize">
-                    Foto Secundaria Registrada 
-                </label>
-                <img src="{{Storage::url($foto_secundaria_guardada)}}" class="img-thumbnail w-100" alt="foto_guardada">
+            <div class="form-group col-12">
+                @if ($mensajeForm)
+                    <div class="row col-12 alert alert-{{$mensajeForm['color']}} alert-dismissible fade show" role="alert">
+                        <div>
+                            {{ $mensajeForm['message'] }}
+                        </div>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" wire:click='resetearMensajeForm()'>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
             </div>
-            @endif
-
-            @if ($ruta_foto_secundaria)
-            <div  class="form-group col-md-6">
-                {{-- titulo de foto --}}
-                <label class="form-label text-capitalize">
-                    Foto Secundaria Nueva
-                </label>
-                <img src="{{ $ruta_foto_secundaria->temporaryUrl() }}" class="img-thumbnail w-100" alt="foto">
-            </div>
-            @endif
-
             @if ($form == 'update')
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label for="descripcion" class="form-label">
                         Beneficios
                     </label>
@@ -108,6 +119,10 @@
                             <option value="{{$beneficio->id}}">{{$beneficio->descripcion}}</option>
                         @endforeach 
                     </select>
+                    
+                </div>
+                <div class="form-group col-md-2">
+                    <br>
                     <button type="button" class="btn btn-sm btn-success rounded-pill" wire:click="saveServicioBeneficio()" @if ($beneficio_id==-1) disabled @endif>+ Agregar beneficio</button>
                 </div>
 
@@ -144,49 +159,51 @@
             @endif
 
             @if ($form == 'create')
-            <div class="form-group col-md-6">
-                <label for="descripcion" class="form-label">
-                    Beneficios
-                </label>
-                <select class="form-control form-control-sm rounded-pill" id="" wire:model='beneficio_id'>
-                    <option value="-1">Seleccionar una opción</option>
-                    @foreach ($beneficios as $beneficio)
-                        <option value="{{$beneficio->id}}">{{$beneficio->descripcion}}</option>
-                    @endforeach 
-                </select>
-                <button type="button" class="btn btn-sm btn-success rounded-pill" wire:click="addBeneficioCollection({{$beneficio_id}})" @if ($beneficio_id==-1) disabled @endif>+ Agregar beneficio</button>
-                <button type="button" class="btn btn-primary" wire:click="imprimir()">Imprimir</button>
-            </div>
-
-            <div class="form-group col-md-6">
-                <label for="" class="form-label">
-                    Listado de Beneficios
-                </label>
-                <table class="table table-sm">
-                    <thead>
-                      <tr>
-                        <th style="width: 10px">#</th>
-                        <th>Descripción</th>
-                        <th>Opción</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($beneficios_collection as $key => $beneficio)
+                <div class="form-group col-md-4">
+                    <label for="descripcion" class="form-label">
+                        Beneficios
+                    </label>
+                    <select class="form-control form-control-sm rounded-pill" id="" wire:model='beneficio_id'>
+                        <option value="-1">Seleccionar una opción</option>
+                        @foreach ($beneficios as $beneficio)
+                            <option value="{{$beneficio->id}}">{{$beneficio->descripcion}}</option>
+                        @endforeach 
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <br>
+                    <button type="button" class="btn btn-sm btn-success rounded-pill" wire:click="addBeneficioCollection({{$beneficio_id}})" @if ($beneficio_id==-1) disabled @endif>+ Agregar beneficio</button>
+                    {{-- <button type="button" class="btn btn-primary" wire:click="imprimir()">Imprimir</button> --}}
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="" class="form-label">
+                        Listado de Beneficios
+                    </label>
+                    <table class="table table-sm">
+                        <thead>
                         <tr>
-                            <td>{{$key+1}}</td>
-                            <td>{{$beneficio->descripcion}}</td>
-                            <td><button class="btn btn-sm rounded-pill btn-danger" type="button" wire:click='deleteBeneficioCollection({{$key}})'><i class="fas fa-trash"></i></button></td>
+                            <th style="width: 10px">#</th>
+                            <th>Descripción</th>
+                            <th>Opción</th>
                         </tr>
-                        @empty
+                        </thead>
+                        <tbody>
+                            @forelse ($beneficios_collection as $key => $beneficio)
                             <tr>
-                                <td colspan="4" class="text-center">
-                                    <p>No hay registros</p>
-                                </td>
+                                <td>{{$key+1}}</td>
+                                <td>{{$beneficio->descripcion}}</td>
+                                <td><button class="btn btn-sm rounded-pill btn-danger" type="button" wire:click='deleteBeneficioCollection({{$key}})'><i class="fas fa-trash"></i></button></td>
                             </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center">
+                                        <p>No hay registros</p>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             @endif
 
 

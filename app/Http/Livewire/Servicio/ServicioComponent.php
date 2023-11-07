@@ -16,7 +16,7 @@ class ServicioComponent extends Component
 
     use WithPagination;
     use WithFileUploads;
-    public $servicio,$ruta_foto_principal,$ruta_foto_secundaria,$beneficios_collection,$beneficio_id=-1,$foto_principal_guardada,$foto_secundaria_guardada;
+    public $servicio,$ruta_foto_principal,$ruta_foto_secundaria,$beneficios_collection,$beneficio_id=-1,$foto_principal_guardada,$foto_secundaria_guardada,$mensajeForm, $mensajeListado;
     public $search, $sort, $direction;
     public $form, $vista;
     protected $paginationTheme = 'bootstrap';
@@ -44,9 +44,9 @@ class ServicioComponent extends Component
     //FUNCION PARA REGISTRAR LAS VALIDACIONES DINAMICAS
     protected function rules(){
         return [
-           'servicio.nombre' => 'required',
-           'servicio.descripcion_resumida' => 'required',
-           'servicio.descripcion_amplia' => 'required',
+           'servicio.nombre' => 'required|max:27',
+           'servicio.descripcion_resumida' => 'required|max:75',
+           'servicio.descripcion_amplia' => 'required|max:725',
            'ruta_foto_principal' => 'required|image|max:2048',
            'ruta_foto_secundaria' => 'required|image|max:2048',
 
@@ -55,9 +55,12 @@ class ServicioComponent extends Component
 
    //PROPIEDAD PARA PERSONALIZAR MENSAJES DE VALIDACION
    protected $messages = [
-       'servicio.descripcion.required' => 'La descripcion es requerida',
+       'servicio.nombre.required' => 'El campo nombre es requerido',
+       'servicio.nombre.max' => 'El campo nombre acepta como máximo 27 caracteres',
        'servicio.descripcion_resumida.required' => 'El detalle de la descripcion resumida es requerida',
+       'servicio.descripcion_resumida.max' => 'El campo nombre acepta como máximo 75 caracteres',
        'servicio.descripcion_amplia.required' => 'El detalle de la descripcion amplia es requerida',
+       'servicio.descripcion_amplia.max' => 'El campo nombre acepta como máximo 725 caracteres',
        'ruta_foto_principal.required' => 'La foto principal es requerida',
        'ruta_foto_principal.image' => 'El campo foto principal debe ser una imagen',
        'ruta_foto_principal.max' => 'El campo foto principal debe tener un tamaño maximo de 2MB',
@@ -84,6 +87,11 @@ class ServicioComponent extends Component
            $this->servicio = new Servicio();
            $this->reset('ruta_foto_principal','ruta_foto_secundaria');
            $this->beneficios_collection = new Collection();
+       }else
+       {
+            if($form == 'update'){
+                $this->reset('ruta_foto_principal','ruta_foto_secundaria','foto_principal_guardada','foto_secundaria_guardada');
+            }
        }
        $this->vista = $vista;
        $this->form = $form;
@@ -116,19 +124,34 @@ class ServicioComponent extends Component
             $servicioCreado->beneficios()->attach($beneficio);
         }
         session()->flash('message', 'Servicio registrado con éxito');
+        $this->mensajeListado= ['message'=>session('message'),'color'=>'success'];
         $this->dispatchBrowserEvent('closeModal');
     }
 
     //FUNCION PARA AGREGAR ELEMENTOS AL beneficio_collection
     public function addBeneficioCollection($beneficio_id){
         $beneficio=Beneficio::find($beneficio_id);
-        $this->beneficios_collection->push($beneficio);
-        $this->reset('beneficio_id');
+        $estaAñadido=true;
+        foreach($this->beneficios_collection as $beneficioAñadido){if($beneficioAñadido->id==$beneficio_id) $estaAñadido=false;}
+        if($estaAñadido)
+        {
+            $this->beneficios_collection->push($beneficio);
+            $this->reset('beneficio_id');
+            session()->flash('message', 'Beneficio agregado');
+            $this->mensajeForm = ['message'=>session('message'),'color'=>'success'];
+        }
+        else
+        {
+            session()->flash('message', 'Beneficio ya está añadido');
+            $this->mensajeForm = ['message'=>session('message'),'color'=>'danger'];
+        }      
     }
 
      //FUNCION PARA ELIMINAR ELEMENTOS DEL beneficio_collection
      public function deleteBeneficioCollection($indiceElemento){
         $this->beneficios_collection->pull($indiceElemento); // Elimina el elemento en el índice $indiceElemento y lo devuelve
+        session()->flash('message', 'Beneficio eliminado');
+        $this->mensajeForm = ['message'=>session('message'),'color'=>'danger'];
     }
 
     public function imprimir()
@@ -146,10 +169,13 @@ class ServicioComponent extends Component
         $servicio = Servicio::find($id);
         if($servicio->estado == 1){
             $servicio->update(['estado' => '0']);
+            session()->flash('message', 'Servicio desactivado');
+            $this->mensajeListado = ['message'=>session('message'),'color'=>'warning'];
         }else{
             $servicio->update(['estado' => '1']);
+            session()->flash('message', 'Servicio activado');
+            $this->mensajeListado = ['message'=>session('message'),'color'=>'success'];
         }
-        session()->flash('message', 'Estado del Servicio actualizado con éxito');    //ENVIAR MENSAJE DE CONFIRMACION
     }
 
     //FUNCION PARA CONSULTAR EN BASE DE DATOS Y LLENAR LOS CAMPOS DEL FORMULARIO
@@ -175,18 +201,50 @@ class ServicioComponent extends Component
         else
             $this->servicio->ruta_foto_secundaria=$this->servicio->ruta_foto_secundaria; */
 
+       /*  if($this->ruta_foto_principal==null) $this->ruta_foto_principal=Storage::url($this->servicio->ruta_foto_principal);
+        if(!$this->ruta_foto_secundaria==null) $this->ruta_foto_secundaria=Storage::url($this->servicio->ruta_foto_secundaria); */
+
+       /*  dd($this->ruta_foto_principal);
+ */
         $this->validate();
-        if($this->ruta_foto_principal!=$this->servicio->ruta_foto_principal) $this->servicio->ruta_foto_principal = $this->ruta_foto_principal->store('public/servicios/principal');
-        if($this->ruta_foto_secundaria!=$this->servicio->ruta_foto_secundaria) $this->servicio->ruta_foto_secundaria = $this->ruta_foto_secundaria->store('public/servicios/principal');
+        if($this->ruta_foto_principal!=$this->servicio->ruta_foto_principal) 
+        {
+            Storage::delete($this->servicio->ruta_foto_principal);
+            $this->servicio->ruta_foto_principal = $this->ruta_foto_principal->store('public/servicios/principal');
+        }
+        if($this->ruta_foto_secundaria!=$this->servicio->ruta_foto_secundaria) 
+        {
+            Storage::delete($this->servicio->ruta_foto_secundaria);
+            $this->servicio->ruta_foto_secundaria = $this->ruta_foto_secundaria->store('public/servicios/secundaria');
+        }
         $this->servicio->update();
         session()->flash('message', 'Servicio actualizado con éxito');
+        $this->mensajeListado= ['message'=>session('message'),'color'=>'warning'];
         $this->dispatchBrowserEvent('closeModal');
     }
 
     public function saveServicioBeneficio(){
-        $servicio=Servicio::find($this->servicio->id);
-        $beneficio=Beneficio::find($this->beneficio_id);
-        $servicio->beneficios()->attach($beneficio);
+        
+        $beneficio_servicio=BeneficioServicio::where('servicio_id',$this->servicio->id)->where('beneficio_id',$this->beneficio_id)->first();
+        if(!$beneficio_servicio)
+        {
+            $servicio=Servicio::find($this->servicio->id);
+            $beneficio=Beneficio::find($this->beneficio_id);
+            $servicio->beneficios()->attach($beneficio);
+            session()->flash('message', 'Beneficio agregado');
+            $this->mensajeForm = ['message'=>session('message'),'color'=>'success'];
+        }
+        else
+        {
+            session()->flash('message', 'Beneficio ya está añadido');
+            $this->mensajeForm = ['message'=>session('message'),'color'=>'danger'];
+        }
+            
+    }
+
+     //FUNCIÓN PARA RESETEAR EL mensajeForm AL PULSAR EN EL CLOSE DEL mensaje
+     public function resetearMensajeForm(){
+        $this->reset('mensajeForm');
     }
 
     public function cambiarEstadoBeneficioServicio($id)
@@ -194,10 +252,14 @@ class ServicioComponent extends Component
         $beneficio_servicio = BeneficioServicio::find($id);
         if($beneficio_servicio->estado == 1){
             $beneficio_servicio->update(['estado' => '0']);
+            session()->flash('message', 'Beneficio desactivado');
+            $this->mensajeForm = ['message'=>session('message'),'color'=>'warning'];
         }else{
             $beneficio_servicio->update(['estado' => '1']);
+            session()->flash('message', 'Beneficio activado');
+            $this->mensajeForm = ['message'=>session('message'),'color'=>'success'];
         }
-
+       
     }
 
 

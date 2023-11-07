@@ -1,7 +1,7 @@
-                        @if ($condition_message)
-                            <div class="row col-12 alert alert-success alert-dismissible fade show" role="alert">
+                        @if ($mensajeListado)
+                            <div class="row col-12 alert alert-{{$mensajeListado['color']}} alert-dismissible fade show" role="alert">
                                 <div>
-                                    {{ session('message') }}
+                                    {{ $mensajeListado['message'] }}
                                 </div>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
