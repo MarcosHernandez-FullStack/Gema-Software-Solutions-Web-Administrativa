@@ -13,7 +13,7 @@ use App\Models\Empresa;
 class ProyectoComponent extends Component
 {
     use WithPagination, WithFileUploads;
-    public $servicio_id,$proyecto,$ruta_foto,$foto_guardada;
+    public $servicio_id,$proyecto,$ruta_foto,$foto_guardada,$mensajeListado;
     public $search, $sort, $direction;
     public $form, $vista;
     protected $paginationTheme = 'bootstrap';
@@ -47,7 +47,7 @@ class ProyectoComponent extends Component
     protected function rules(){
         return [
            'proyecto.servicio_id' => 'required',
-           'proyecto.nombre' => 'required',
+           'proyecto.nombre' => 'required|max:40',
            'proyecto.fecha_implementacion' => 'required',
            'proyecto.empresa_id' => 'required',
            'ruta_foto' => 'required|image|max:2048',
@@ -56,10 +56,11 @@ class ProyectoComponent extends Component
 
    //PROPIEDAD PARA PERSONALIZAR MENSAJES DE VALIDACION
    protected $messages = [
-       'proyecto.nombre.required' => 'La nombre es requerida',
-       'proyecto.fecha_implementacion.required' => 'La fecha implementacion es requerida',
-       'proyecto.empresa_id.required' => 'La empresa cliente es requerida',
-       'ruta_foto.required' => 'La foto es requerida',
+       'proyecto.nombre.required' => 'El campo nombre es requerido',
+       'proyecto.nombre.max' => 'El campo nombre acepta como máximo 40 caracteres',
+       'proyecto.fecha_implementacion.required' => 'El campo fecha implementación es requerida',
+       'proyecto.empresa_id.required' => 'La campo empresa cliente es requerido',
+       'ruta_foto.required' => 'El campo foto es requerido',
        'ruta_foto.image' => 'El campo foto debe ser una imagen',
        'ruta_foto.max' => 'El campo foto debe tener un tamaño maximo de 2MB',
    ];
@@ -108,6 +109,7 @@ class ProyectoComponent extends Component
         }
         $this->proyecto->save();
         session()->flash('message', 'Proyecto registrado con éxito');
+        $this->mensajeListado= ['message'=>session('message'),'color'=>'success'];
         $this->dispatchBrowserEvent('closeModal');
     }
 
@@ -116,10 +118,13 @@ class ProyectoComponent extends Component
         $proyecto = Proyecto::find($id);
         if($proyecto->estado == 1){
             $proyecto->update(['estado' => '0']);
+            session()->flash('message', 'Proyecto desactivado');
+            $this->mensajeListado = ['message'=>session('message'),'color'=>'warning'];
         }else{
             $proyecto->update(['estado' => '1']);
+            session()->flash('message', 'Proyecto activado');
+            $this->mensajeListado = ['message'=>session('message'),'color'=>'success'];
         }
-        session()->flash('message', 'Estado del Proyecto actualizado con éxito');    //ENVIAR MENSAJE DE CONFIRMACION
     }
 
     //FUNCION PARA CONSULTAR EN BASE DE DATOS Y LLENAR LOS CAMPOS DEL FORMULARIO
@@ -136,6 +141,7 @@ class ProyectoComponent extends Component
         if($this->ruta_foto!=$this->proyecto->ruta_foto) $this->proyecto->ruta_foto = $this->ruta_foto->store('public/proyectos');
         $this->proyecto->update();
         session()->flash('message', 'Proyecto actualizado con éxito');
+        $this->mensajeListado= ['message'=>session('message'),'color'=>'success'];
         $this->dispatchBrowserEvent('closeModal');
     }
 

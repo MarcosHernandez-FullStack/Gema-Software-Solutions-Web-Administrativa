@@ -10,7 +10,7 @@
                            
                             'label' => 'Servicio',
                             'create_function' => "showModal('form', 'create')",
-                            'condition_message' => session()->has('message'),
+                            'mensajeListado' => $mensajeListado,
                             'find' => 'Buscar por nombre del servicio'
                         ]
                         )
@@ -66,7 +66,8 @@
                                     <!-- /.widget-user -->
                                 </div>
                             @empty
-
+                                <div class="col-12" style="color: blue"><strong>No hay servicios disponibles</strong></div>
+                                
                             @endforelse
                         </div>
                         @include('layouts.footer-listado', ['elementosListado' => $servicios])

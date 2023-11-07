@@ -15,7 +15,7 @@ class CreateProyectoTable extends Migration
     {
         Schema::create('proyecto', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->string('nombre',40);
             $table->enum('estado', [0, 1])->default(1);
             $table->string('ruta_foto');
             $table->foreignId('servicio_id')->constrained('servicio');

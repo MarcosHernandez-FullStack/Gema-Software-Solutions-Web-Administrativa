@@ -125,7 +125,7 @@
                                                 <div class="col-12 my-2">
                                                     <h5 class="widget-user-desc text-left text-md">Empresa cliente: {{ $proyecto->empresa->razon_social }}</h5>
                                                 </div>
-                                                <div class="row col-12">
+                                               {{--  <div class="row col-12">
                                                     <div class="col-6">
                                                        
                                                             @livewire("detalle-proyecto.detalle-proyecto-component", ['proyecto' =>  $proyecto], key("detalle-proyecto-$proyecto->id"))
@@ -139,6 +139,22 @@
                                                                 EDITAR
                                                             </button>
                                                     </div>
+                                                </div> --}}
+
+                                                <div class="px-5 py-3" style="position: absolute;bottom: 0%;left:0%;right: 0%;">
+                                                    <div class="col-12 my-2">
+                                                        <div class="d-flex justify-content-between">
+                                                            @livewire("detalle-proyecto.detalle-proyecto-component", ['proyecto' =>  $proyecto], key("detalle-proyecto-$proyecto->id"))
+                                                            <button type="button"
+                                                            class="btn btn-sm btn-warning btn-sm rounded-pill float-right"
+                                                            data-toggle="modal" data-target="#modal_usuario"
+                                                            wire:click="edit({{ $proyecto->id }})"><i
+                                                                class="fas fa-pen"></i>
+                                                                EDITAR
+                                                            </button>
+                                                        </div>
+                                                    </div>
+        
                                                 </div>
                                                 
                                             </div>
@@ -147,7 +163,7 @@
                                     <!-- /.widget-user -->
                                 </div>
                             @empty
-
+                                <div class="col-12" style="color: blue"><strong>No hay proyectos disponibles</strong></div>
                             @endforelse
                         </div>
                         @include('layouts.footer-listado', ['elementosListado' => $proyectos])
