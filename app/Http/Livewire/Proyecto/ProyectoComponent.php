@@ -17,8 +17,7 @@ class ProyectoComponent extends Component
     public $search, $sort, $direction;
     public $form, $vista;
     protected $paginationTheme = 'bootstrap';
-    public $paginacion = 2;
-
+    public $paginacion = 6;
 
     //CONSTRUCTOR EN DONDE SE INICIALIZAN VARIABLES
     public function mount($servicio_id)
@@ -45,13 +44,17 @@ class ProyectoComponent extends Component
 
     //FUNCION PARA REGISTRAR LAS VALIDACIONES DINAMICAS
     protected function rules(){
-        return [
-           'proyecto.servicio_id' => 'required',
-           'proyecto.nombre' => 'required|max:40',
-           'proyecto.fecha_implementacion' => 'required',
-           'proyecto.empresa_id' => 'required',
-           'ruta_foto' => 'required|image|max:2048',
+        $rules=[
+            'proyecto.servicio_id' => 'required',
+            'proyecto.nombre' => 'required|max:40',
+            'proyecto.fecha_implementacion' => 'required|before:2041-01-01|after:2018-03-31',
+            'proyecto.empresa_id' => 'required',
         ];
+        if ((!is_null($this->ruta_foto) && $this->form!=='update')||$this->form=='create') 
+        {
+            $rules['ruta_foto'] = 'required|image|max:2048';
+        }
+        return $rules;
    }
 
    //PROPIEDAD PARA PERSONALIZAR MENSAJES DE VALIDACION
@@ -59,6 +62,8 @@ class ProyectoComponent extends Component
        'proyecto.nombre.required' => 'El campo nombre es requerido',
        'proyecto.nombre.max' => 'El campo nombre acepta como máximo 40 caracteres',
        'proyecto.fecha_implementacion.required' => 'El campo fecha implementación es requerida',
+       'proyecto.fecha_implementacion.before' => 'Fecha como máximo 31/12/2040',
+       'proyecto.fecha_implementacion.after' => 'Fecha como mínimo 01/04/2018',
        'proyecto.empresa_id.required' => 'La campo empresa cliente es requerido',
        'ruta_foto.required' => 'El campo foto es requerido',
        'ruta_foto.image' => 'El campo foto debe ser una imagen',
@@ -135,18 +140,21 @@ class ProyectoComponent extends Component
         $this->foto_guardada = $this->proyecto->ruta_foto;
     }
 
-
     public function update(){
         $this->validate();
-        if($this->ruta_foto!=$this->proyecto->ruta_foto) $this->proyecto->ruta_foto = $this->ruta_foto->store('public/proyectos');
+        if(!is_null($this->ruta_foto) && $this->ruta_foto!=$this->proyecto->ruta_foto) 
+        {
+            Storage::delete($this->proyecto->ruta_foto);
+            $this->proyecto->ruta_foto = $this->ruta_foto->store('public/proyectos');
+        }
         $this->proyecto->update();
         session()->flash('message', 'Proyecto actualizado con éxito');
         $this->mensajeListado= ['message'=>session('message'),'color'=>'success'];
         $this->dispatchBrowserEvent('closeModal');
     }
 
-    /* public function pasarResultadoADetalleProyectoComponent($proyecto_id) {
-        return $proyecto_id;
+    //FUNCIÓN PARA RESETEAR EL LA VARIABLE QUE ALBERGA AL MENSAJE AL PULSAR EN EL CLOSE DEL MENSAJE
+    public function resetearMensaje($contenedor_mensaje){
+        $this->reset($contenedor_mensaje);
     }
- */
 }
