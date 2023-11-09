@@ -43,14 +43,18 @@ class ServicioComponent extends Component
 
     //FUNCION PARA REGISTRAR LAS VALIDACIONES DINAMICAS
     protected function rules(){
-        return [
-           'servicio.nombre' => 'required|max:27',
-           'servicio.descripcion_resumida' => 'required|max:75',
-           'servicio.descripcion_amplia' => 'required|max:725',
-           'ruta_foto_principal' => 'required|image|max:2048',
-           'ruta_foto_secundaria' => 'required|image|max:2048',
-
+        $rules = [
+            'servicio.nombre' => 'required|max:27',
+            'servicio.descripcion_resumida' => 'required|max:75',
+            'servicio.descripcion_amplia' => 'required|max:725',
         ];
+        if ((!is_null($this->ruta_foto_principal) && $this->form!=='update')||$this->form=='create') {
+            $rules['ruta_foto_principal'] = 'required|image|max:2048';
+        }
+        if ((!is_null($this->ruta_foto_secundaria) && $this->form!=='update')||$this->form=='create') {
+            $rules['ruta_foto_secundaria'] = 'required|image|max:2048';
+        }
+        return $rules;
    }
 
    //PROPIEDAD PARA PERSONALIZAR MENSAJES DE VALIDACION
@@ -111,21 +115,31 @@ class ServicioComponent extends Component
     //FUNCION PARA GUARDAR EN BASE DE DATOS
     public function save(){
         $this->validate();
-         //GUARDAR FOTO
-         if($this->ruta_foto_principal && $this->ruta_foto_secundaria){
-            $this->servicio->ruta_foto_principal = $this->ruta_foto_principal->store('public/servicios/principal');
-            $this->servicio->ruta_foto_secundaria = $this->ruta_foto_secundaria->store('public/servicios/secundaria');
-        }
-        $servicioCreado= new Servicio();
-        $servicioCreado=$this->servicio;
-        $servicioCreado->save();
-        foreach($this->beneficios_collection as $beneficio)
+        if($this->beneficios_collection->count() > 0)
         {
-            $servicioCreado->beneficios()->attach($beneficio);
+            //GUARDAR FOTO
+            if($this->ruta_foto_principal && $this->ruta_foto_secundaria){
+                $this->servicio->ruta_foto_principal = $this->ruta_foto_principal->store('public/servicios/principal');
+                $this->servicio->ruta_foto_secundaria = $this->ruta_foto_secundaria->store('public/servicios/secundaria');
+            }
+            $servicioCreado= new Servicio();
+            $servicioCreado=$this->servicio;
+            $servicioCreado->save();
+            foreach($this->beneficios_collection as $beneficio)
+            {
+                $servicioCreado->beneficios()->attach($beneficio);
+            }
+            session()->flash('message', 'Servicio registrado con éxito');
+            $this->mensajeListado= ['message'=>session('message'),'color'=>'success'];
+            $this->dispatchBrowserEvent('closeModal');
         }
-        session()->flash('message', 'Servicio registrado con éxito');
-        $this->mensajeListado= ['message'=>session('message'),'color'=>'success'];
-        $this->dispatchBrowserEvent('closeModal');
+        else
+        {
+            session()->flash('message', 'No hay beneficios');
+            $this->mensajeForm = ['message'=>session('message'),'color'=>'danger'];
+
+        }
+           
     }
 
     //FUNCION PARA AGREGAR ELEMENTOS AL beneficio_collection
@@ -191,35 +205,20 @@ class ServicioComponent extends Component
     }
 
     public function update(){
-        /* if($this->servicio->) */
-       /*  if($this->ruta_foto_principal) 
-            $this->servicio->ruta_foto_principal = $this->ruta_foto_principal->store('public/servicios/principal');
-        else
-            $this->servicio->ruta_foto_principal=$this->servicio->ruta_foto_principal;
-        if($this->ruta_foto_secundaria) 
-            $this->servicio->ruta_foto_secundaria = $this->ruta_foto_secundaria->store('public/servicios/secundaria');
-        else
-            $this->servicio->ruta_foto_secundaria=$this->servicio->ruta_foto_secundaria; */
-
-       /*  if($this->ruta_foto_principal==null) $this->ruta_foto_principal=Storage::url($this->servicio->ruta_foto_principal);
-        if(!$this->ruta_foto_secundaria==null) $this->ruta_foto_secundaria=Storage::url($this->servicio->ruta_foto_secundaria); */
-
-       /*  dd($this->ruta_foto_principal);
- */
         $this->validate();
-        if($this->ruta_foto_principal!=$this->servicio->ruta_foto_principal) 
+        if(!is_null($this->ruta_foto_principal) && $this->ruta_foto_principal!=$this->servicio->ruta_foto_principal) 
         {
             Storage::delete($this->servicio->ruta_foto_principal);
             $this->servicio->ruta_foto_principal = $this->ruta_foto_principal->store('public/servicios/principal');
         }
-        if($this->ruta_foto_secundaria!=$this->servicio->ruta_foto_secundaria) 
+        if(!is_null($this->ruta_foto_secundaria) && $this->ruta_foto_secundaria!=$this->servicio->ruta_foto_secundaria) 
         {
             Storage::delete($this->servicio->ruta_foto_secundaria);
             $this->servicio->ruta_foto_secundaria = $this->ruta_foto_secundaria->store('public/servicios/secundaria');
         }
         $this->servicio->update();
         session()->flash('message', 'Servicio actualizado con éxito');
-        $this->mensajeListado= ['message'=>session('message'),'color'=>'warning'];
+        $this->mensajeListado= ['message'=>session('message'),'color'=>'success'];
         $this->dispatchBrowserEvent('closeModal');
     }
 
@@ -242,11 +241,6 @@ class ServicioComponent extends Component
             
     }
 
-     //FUNCIÓN PARA RESETEAR EL mensajeForm AL PULSAR EN EL CLOSE DEL mensaje
-     public function resetearMensajeForm(){
-        $this->reset('mensajeForm');
-    }
-
     public function cambiarEstadoBeneficioServicio($id)
     {
         $beneficio_servicio = BeneficioServicio::find($id);
@@ -262,8 +256,9 @@ class ServicioComponent extends Component
        
     }
 
-
-    
-
+    //FUNCIÓN PARA RESETEAR EL LA VARIABLE QUE ALBERGA AL MENSAJE AL PULSAR EN EL CLOSE DEL MENSAJE
+    public function resetearMensaje($contenedor_mensaje){
+        $this->reset($contenedor_mensaje);
+    }
 
 }

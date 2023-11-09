@@ -120,7 +120,7 @@
                                                   
                                                 </div>
                                                 <div class="col-12 my-2">
-                                                    <h5 class="widget-user-desc text-left text-md">Fecha implementación: {{ $proyecto->fecha_implementacion }}</h5>
+                                                    <h5 class="widget-user-desc text-left text-md">Fecha implementación: {{ date('d/m/Y', strtotime($proyecto->fecha_implementacion)) }}</h5>
                                                 </div>
                                                 <div class="col-12 my-2">
                                                     <h5 class="widget-user-desc text-left text-md">Empresa cliente: {{ $proyecto->empresa->razon_social }}</h5>

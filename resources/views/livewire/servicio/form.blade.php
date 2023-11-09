@@ -43,28 +43,28 @@
                 <label for="foto" class="form-label text-capitalize">
                     Foto principal
                 </label>
-                <input type="file" class="form-control form-control-sm rounded-pill" id="ruta_foto_principal" wire:model='ruta_foto_principal' >
+                <input type="file" class="form-control form-control-sm rounded-pill" id="ruta_foto_principal" wire:model='ruta_foto_principal' accept="image/png,image/jpeg">
                 @error('ruta_foto_principal')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
                 <br>
                 <div class="row">
-                    <div class="col-6">
-                        @if ($foto_principal_guardada)
-                        <label class="form-label text-capitalize">
-                            Foto Principal Registrada 
-                        </label>
-                        <img src="{{Storage::url($foto_principal_guardada)}}" class="img-thumbnail w-100" alt="foto_guardada">
-                        @endif
-                    </div>
-                    <div class="col-6">
-                        @if ($ruta_foto_principal /* instanceof \Livewire\TemporaryUploadedFile */)
-                        <label class="form-label text-capitalize">
-                            Foto Principal Nueva
-                        </label>
-                        <img src="{{ $ruta_foto_principal->temporaryUrl() }}" class="img-thumbnail w-100" alt="foto">
-                        @endif
-                    </div>
+                    @if ($foto_principal_guardada)
+                        <div class="col-6">
+                            <label class="form-label text-capitalize">
+                                Foto Principal Registrada 
+                            </label>
+                            <img src="{{Storage::url($foto_principal_guardada)}}" class="img-thumbnail w-100" alt="foto_guardada">
+                        </div>
+                    @endif
+                    @if ($ruta_foto_principal /* instanceof \Livewire\TemporaryUploadedFile */)
+                        <div class="col-6">
+                            <label class="form-label text-capitalize">
+                                Foto Principal Nueva
+                            </label>
+                            <img src="{{ $ruta_foto_principal->temporaryUrl() }}" class="img-thumbnail w-100" alt="foto">
+                        </div>
+                    @endif
                 </div>        
             </div>
             
@@ -72,28 +72,28 @@
                 <label for="foto" class="form-label text-capitalize">
                     Foto secundaria
                 </label>
-                <input type="file" class="form-control form-control-sm rounded-pill" id="ruta_foto_secundaria" wire:model='ruta_foto_secundaria' >
+                <input type="file" class="form-control form-control-sm rounded-pill" id="ruta_foto_secundaria" wire:model='ruta_foto_secundaria' accept="image/png,image/jpeg">
                 @error('ruta_foto_secundaria')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
                 <br>
                 <div class="row">
-                    <div class="col-6">
-                        @if ($foto_secundaria_guardada)
-                        <label class="form-label text-capitalize">
-                            Foto Secundaria Registrada 
-                        </label>
-                        <img src="{{Storage::url($foto_secundaria_guardada)}}" class="img-thumbnail w-100" alt="foto_guardada">
-                        @endif
-                    </div>
-                    <div class="col-6">
-                        @if ($ruta_foto_secundaria /* instanceof \Livewire\TemporaryUploadedFile */)
-                        <label class="form-label text-capitalize">
-                            Foto Secundaria Nueva
-                        </label>
-                        <img src="{{ $ruta_foto_secundaria->temporaryUrl() }}" class="img-thumbnail w-100" alt="foto">
-                        @endif
-                    </div>
+                    @if ($foto_secundaria_guardada)
+                        <div class="col-6">
+                            <label class="form-label text-capitalize">
+                                Foto Secundaria Registrada 
+                            </label>
+                            <img src="{{Storage::url($foto_secundaria_guardada)}}" class="img-thumbnail w-100" alt="foto_guardada">
+                        </div>
+                    @endif
+                    @if ($ruta_foto_secundaria /* instanceof \Livewire\TemporaryUploadedFile */)
+                        <div class="col-6">
+                            <label class="form-label text-capitalize">
+                                Foto Secundaria Nueva
+                            </label>
+                            <img src="{{ $ruta_foto_secundaria->temporaryUrl() }}" class="img-thumbnail w-100" alt="foto">
+                        </div>
+                    @endif
                 </div>
             </div>
             <div class="form-group col-12">
@@ -102,7 +102,7 @@
                         <div>
                             {{ $mensajeForm['message'] }}
                         </div>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" wire:click='resetearMensajeForm()'>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" wire:click="resetearMensaje('mensajeForm')">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
