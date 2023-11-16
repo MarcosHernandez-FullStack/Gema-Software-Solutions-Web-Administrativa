@@ -87,8 +87,8 @@ class ProyectoComponent extends Component
        if($form == 'create'){
            $this->proyecto = new Proyecto();
            $this->proyecto->servicio_id=$this->servicio_id;
-           $this->reset('ruta_foto');
        }
+       $this->reset('ruta_foto');
        $this->vista = $vista;
        $this->form = $form;
    }

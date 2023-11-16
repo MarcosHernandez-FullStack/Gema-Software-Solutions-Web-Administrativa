@@ -17,7 +17,7 @@ class ServicioSeeder extends Seeder
             [
                 [
                     'nombre' => 'DISEÑO WEB',
-                    'descripcion_resumida' => 'Expande el alcance de tu marca y deja que todos te vean',
+                    'descripcion_resumida' => 'Expande el alcance de tu marca y deja que todos te vean.',
                     'descripcion_amplia' => 'En Gema Software Solutions, nos especializamos en la creación de sitios web a medida que reflejan la esencia de tu marca y brindan una experiencia excepcional a tus visitantes. Nuestros servicios de diseño web incluyen diseño personalizado, diseño responsive para dispositivos móviles, optimización SEO y una destacada experiencia de usuario (UX). Nuestro equipo de diseñadores se esfuerza por crear una interfaz visualmente impactante y una navegación intuitiva. Además, ofrecemos soporte técnico continuo para mantener tu sitio en óptimas condiciones. Estamos comprometidos a ayudarte a destacar en línea. ¡Contáctanos hoy para iniciar tu proyecto de diseño web!',
                     'ruta_foto_principal'=>'public/servicios/principal/DISEÑO WEB.jpg',
                     'ruta_foto_secundaria'=>'public/servicios/secundaria/ECOMMERCE-1.jpg'
