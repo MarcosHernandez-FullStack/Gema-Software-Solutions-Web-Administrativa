@@ -23,5 +23,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/bienvenido', BienvenidoComponent::class)->name('bienvenido');
     Route::get('/servicios', ServicioComponent::class)->name('servicios');
     Route::get('/proyectos/{servicio_id}', ProyectoComponent::class)->name('proyectos');
-    Route::get('/diseños', DiseñoComponent::class)->name('diseños');
+    /* Route::get('/diseños', DiseñoComponent::class)->name('diseños'); */
 });

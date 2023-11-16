@@ -20,7 +20,7 @@ class CreateServicioTable extends Migration
             $table->string('ruta_foto_principal');
             $table->string('ruta_foto_secundaria');
             $table->string('descripcion_resumida',75);
-            $table->text('descripcion_amplia',725);
+            $table->string('descripcion_amplia',725);
            /*  $table->foreignId('users_id')->constrained('users')->nullable(); */
             $table->timestamps();
         });
