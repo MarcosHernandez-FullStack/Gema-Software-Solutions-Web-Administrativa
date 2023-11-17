@@ -17,6 +17,7 @@ use App\Http\Livewire\InicioSesion\InicioSesionComponent;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/', InicioSesionComponent::class)->name('login');
 
 Route::group(['middleware' => 'auth'], function () {
@@ -24,4 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/servicios', ServicioComponent::class)->name('servicios');
     Route::get('/proyectos/{servicio_id}', ProyectoComponent::class)->name('proyectos');
     /* Route::get('/diseños', DiseñoComponent::class)->name('diseños'); */
+    Route::get('/storage-link', function () {
+        Artisan::call('storage:link');
+    });
 });
