@@ -10,6 +10,18 @@
             </button>
         </div>
         <div class="modal-body row">
+            <div class="form-group col-12">
+                @if ($mensajeForm)
+                    <div class="row col-12 alert alert-{{$mensajeForm['color']}} alert-dismissible fade show" role="alert">
+                        <div>
+                            {{ $mensajeForm['message'] }}
+                        </div>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" wire:click="resetearMensaje('mensajeForm')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+            </div>
             <div class="form-group col-md-6">
                 <label for="descripcion" class="form-label">
                     Nombre

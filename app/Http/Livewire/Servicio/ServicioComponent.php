@@ -115,30 +115,38 @@ class ServicioComponent extends Component
     //FUNCION PARA GUARDAR EN BASE DE DATOS
     public function save(){
         $this->validate();
-        if($this->beneficios_collection->count() > 0)
-        {
-            //GUARDAR FOTO
-            if($this->ruta_foto_principal && $this->ruta_foto_secundaria){
-                $this->servicio->ruta_foto_principal = $this->ruta_foto_principal->store('public/servicios/principal');
-                $this->servicio->ruta_foto_secundaria = $this->ruta_foto_secundaria->store('public/servicios/secundaria');
-            }
-            $servicioCreado= new Servicio();
-            $servicioCreado=$this->servicio;
-            $servicioCreado->save();
-            foreach($this->beneficios_collection as $beneficio)
+        try {
+            if($this->beneficios_collection->count() > 0)
             {
-                $servicioCreado->beneficios()->attach($beneficio);
+                //GUARDAR FOTO
+                if($this->ruta_foto_principal && $this->ruta_foto_secundaria){
+                    $this->servicio->ruta_foto_principal = $this->ruta_foto_principal->store('public/servicios/principal');
+                    $this->servicio->ruta_foto_secundaria = $this->ruta_foto_secundaria->store('public/servicios/secundaria');
+                }
+                $servicioCreado= new Servicio();
+                $servicioCreado=$this->servicio;
+                $servicioCreado->save();
+                foreach($this->beneficios_collection as $beneficio)
+                {
+                    $servicioCreado->beneficios()->attach($beneficio);
+                }
+                session()->flash('message', 'Servicio registrado con éxito');
+                $this->mensajeListado= ['message'=>session('message'),'color'=>'success'];
+                $this->dispatchBrowserEvent('closeModal');
             }
-            session()->flash('message', 'Servicio registrado con éxito');
-            $this->mensajeListado= ['message'=>session('message'),'color'=>'success'];
-            $this->dispatchBrowserEvent('closeModal');
-        }
-        else
-        {
-            session()->flash('message', 'No hay beneficios');
-            $this->mensajeForm = ['message'=>session('message'),'color'=>'danger'];
+            else
+            {
+                $this->resetearMensaje('mensajeForm');
+                session()->flash('message', 'No hay beneficios');
+                $this->mensajeForm = ['message'=>session('message'),'color'=>'danger'];
 
+            }
+        } catch (\Exception $e) {
+            $this->resetearMensaje('mensajeForm');
+            session()->flash('message', strtok($e->getMessage(), "."));
+            $this->mensajeForm= ['message'=>session('message'),'color'=>'danger'];
         }
+
            
     }
 
@@ -206,20 +214,27 @@ class ServicioComponent extends Component
 
     public function update(){
         $this->validate();
-        if(!is_null($this->ruta_foto_principal) && $this->ruta_foto_principal!=$this->servicio->ruta_foto_principal) 
-        {
-            Storage::delete($this->servicio->ruta_foto_principal);
-            $this->servicio->ruta_foto_principal = $this->ruta_foto_principal->store('public/servicios/principal');
+        try {
+            if(!is_null($this->ruta_foto_principal) && $this->ruta_foto_principal!=$this->servicio->ruta_foto_principal) 
+            {
+                Storage::delete($this->servicio->ruta_foto_principal);
+                $this->servicio->ruta_foto_principal = $this->ruta_foto_principal->store('public/servicios/principal');
+            }
+            if(!is_null($this->ruta_foto_secundaria) && $this->ruta_foto_secundaria!=$this->servicio->ruta_foto_secundaria) 
+            {
+                Storage::delete($this->servicio->ruta_foto_secundaria);
+                $this->servicio->ruta_foto_secundaria = $this->ruta_foto_secundaria->store('public/servicios/secundaria');
+            }
+            $this->servicio->update();
+            session()->flash('message', 'Servicio actualizado con éxito');
+            $this->mensajeListado= ['message'=>session('message'),'color'=>'success'];
+            $this->dispatchBrowserEvent('closeModal');
+        } catch (\Exception $e) {
+            $this->resetearMensaje('mensajeForm');
+            session()->flash('message', strtok($e->getMessage(), "."));
+            $this->mensajeForm= ['message'=>session('message'),'color'=>'danger'];
         }
-        if(!is_null($this->ruta_foto_secundaria) && $this->ruta_foto_secundaria!=$this->servicio->ruta_foto_secundaria) 
-        {
-            Storage::delete($this->servicio->ruta_foto_secundaria);
-            $this->servicio->ruta_foto_secundaria = $this->ruta_foto_secundaria->store('public/servicios/secundaria');
-        }
-        $this->servicio->update();
-        session()->flash('message', 'Servicio actualizado con éxito');
-        $this->mensajeListado= ['message'=>session('message'),'color'=>'success'];
-        $this->dispatchBrowserEvent('closeModal');
+
     }
 
     public function saveServicioBeneficio(){

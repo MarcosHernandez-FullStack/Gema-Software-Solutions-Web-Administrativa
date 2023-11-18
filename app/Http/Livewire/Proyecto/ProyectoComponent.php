@@ -13,7 +13,7 @@ use App\Models\Empresa;
 class ProyectoComponent extends Component
 {
     use WithPagination, WithFileUploads;
-    public $servicio_id,$proyecto,$ruta_foto,$foto_guardada,$mensajeListado;
+    public $servicio_id,$proyecto,$ruta_foto,$foto_guardada,$mensajeListado,$mensajeForm;
     public $search, $sort, $direction;
     public $form, $vista;
     protected $paginationTheme = 'bootstrap';
@@ -108,14 +108,21 @@ class ProyectoComponent extends Component
      //FUNCION PARA GUARDAR EN BASE DE DATOS
      public function save(){
         $this->validate();
-         //GUARDAR FOTO
-         if($this->ruta_foto){
-            $this->proyecto->ruta_foto = $this->ruta_foto->store('public/proyectos');
+
+        try {
+            //GUARDAR FOTO
+            if($this->ruta_foto){
+                $this->proyecto->ruta_foto = $this->ruta_foto->store('public/proyectos');
+            }
+            $this->proyecto->save();
+            session()->flash('message', 'Proyecto registrado con éxito');
+            $this->mensajeListado= ['message'=>session('message'),'color'=>'success'];
+            $this->dispatchBrowserEvent('closeModal');
+        } catch (\Exception $e) {
+            $this->resetearMensaje('mensajeForm');
+            session()->flash('message', strtok($e->getMessage(), "."));
+            $this->mensajeForm= ['message'=>session('message'),'color'=>'danger'];
         }
-        $this->proyecto->save();
-        session()->flash('message', 'Proyecto registrado con éxito');
-        $this->mensajeListado= ['message'=>session('message'),'color'=>'success'];
-        $this->dispatchBrowserEvent('closeModal');
     }
 
     //FUNCION PARA CAMBIAR EL ESTADO DEL MODELO
@@ -142,15 +149,21 @@ class ProyectoComponent extends Component
 
     public function update(){
         $this->validate();
-        if(!is_null($this->ruta_foto) && $this->ruta_foto!=$this->proyecto->ruta_foto) 
-        {
-            Storage::delete($this->proyecto->ruta_foto);
-            $this->proyecto->ruta_foto = $this->ruta_foto->store('public/proyectos');
+        try {
+            if(!is_null($this->ruta_foto) && $this->ruta_foto!=$this->proyecto->ruta_foto) 
+            {
+                Storage::delete($this->proyecto->ruta_foto);
+                $this->proyecto->ruta_foto = $this->ruta_foto->store('public/proyectos');
+            }
+            $this->proyecto->update();
+            session()->flash('message', 'Proyecto actualizado con éxito');
+            $this->mensajeListado= ['message'=>session('message'),'color'=>'success'];
+            $this->dispatchBrowserEvent('closeModal');
+        } catch (\Exception $e) {
+            $this->resetearMensaje('mensajeForm');
+            session()->flash('message', strtok($e->getMessage(), "."));
+            $this->mensajeForm= ['message'=>session('message'),'color'=>'danger'];
         }
-        $this->proyecto->update();
-        session()->flash('message', 'Proyecto actualizado con éxito');
-        $this->mensajeListado= ['message'=>session('message'),'color'=>'success'];
-        $this->dispatchBrowserEvent('closeModal');
     }
 
     //FUNCIÓN PARA RESETEAR EL LA VARIABLE QUE ALBERGA AL MENSAJE AL PULSAR EN EL CLOSE DEL MENSAJE
