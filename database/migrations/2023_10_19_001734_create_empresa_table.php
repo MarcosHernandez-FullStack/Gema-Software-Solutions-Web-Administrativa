@@ -15,9 +15,9 @@ class CreateEmpresaTable extends Migration
     {
         Schema::create('empresa', function (Blueprint $table) {
             $table->id();
-            $table->string('ruc')->unique();
-            $table->string('razon_social')->unique();
-            $table->string('email')->unique();
+            $table->string('ruc',11)->unique()->nullable();
+            $table->string('razon_social',38);
+            $table->string('email')->unique()->nullable();
             $table->enum('estado', [0, 1])->default(1);
             $table->timestamps();
         });

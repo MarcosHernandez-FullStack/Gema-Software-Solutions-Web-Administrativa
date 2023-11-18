@@ -27,6 +27,16 @@ class EmpresaSeeder extends Seeder
                     'ruc' => '12345678902',
                     'email' => 'colegionarvaez@gmail.com'
                 ],
+                [
+                    'razon_social' => 'Empresa de Trujillo',
+                    'ruc' => null,
+                    'email' => null
+                ],
+                [
+                    'razon_social' => 'Institución de Trujillo',
+                    'ruc' => null,
+                    'email' => null
+                ],
                 
             ]);
     }

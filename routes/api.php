@@ -29,3 +29,4 @@ Route::get('/getServicioPorId/{id}', [ApiWebInformativaController::class, 'getSe
 Route::get('/getProyectos', [ApiWebInformativaController::class, 'getProyectos']);
 
 Route::get('/getProyectoPorId/{id}', [ApiWebInformativaController::class, 'getProyectoPorId']);
+Route::post('/postSaveContacto', [ApiWebInformativaController::class, 'postSaveContacto']);
