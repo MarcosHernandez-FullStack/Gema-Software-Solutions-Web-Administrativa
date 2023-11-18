@@ -14,7 +14,7 @@ class EmpresaSeeder extends Seeder
      */
     public function run()
     {
-        
+
         Empresa::insert(
             [
                 [
@@ -33,11 +33,30 @@ class EmpresaSeeder extends Seeder
                     'email' => null
                 ],
                 [
-                    'razon_social' => 'Institución de Trujillo',
+                    'razon_social' => 'Institución de Trujillo - Perú',
                     'ruc' => null,
                     'email' => null
                 ],
-                
+
+                [
+                    'razon_social' => 'Institución de La Libertad - Perú',
+                    'ruc' => null,
+                    'email' => null
+                ],
+
+                [
+                    'razon_social' => 'Colegio de Lima - Perú',
+                    'ruc' => null,
+                    'email' => null
+                ],
+
+                [
+                    'razon_social' => 'Colegio de Madrid - España',
+                    'ruc' => null,
+                    'email' => null
+                ],
+
+
             ]);
     }
 }
