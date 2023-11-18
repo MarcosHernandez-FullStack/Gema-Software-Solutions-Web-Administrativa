@@ -35,7 +35,7 @@ class DetalleProyectoSeeder extends Seeder
 
                 /* 2 */
                 [
-                    'nombre' => 'ESTADISTICAS DE INGRESOS',
+                    'nombre' => 'ESTADÍSTICAS DE INGRESOS',
                     'ruta_foto' => 'public/detalles-proyectos/si-01-1.png',
                     'proyecto_id' => 2,
                 ],
@@ -53,7 +53,7 @@ class DetalleProyectoSeeder extends Seeder
 
                 /* 3 */
                 [
-                    'nombre' => 'ESTADISTICAS DE INGRESOS',
+                    'nombre' => 'ESTADÍSTICAS DE INGRESOS',
                     'ruta_foto' => 'public/detalles-proyectos/si-02-1.png',
                     'proyecto_id' => 3,
                 ],
@@ -107,8 +107,8 @@ class DetalleProyectoSeeder extends Seeder
 
                 /* 6 */
                 [
-                    'nombre' => 'BOLETOS COMPRADOS',
-                    'ruta_foto' => 'public/detalles-proyectos/si-05-1.png',
+                    'nombre' => 'VISTA PRINCIPAL',
+                    'ruta_foto' => 'public/detalles-proyectos/si-05-3.png',
                     'proyecto_id' => 6,
                 ],
                 [
@@ -117,8 +117,8 @@ class DetalleProyectoSeeder extends Seeder
                     'proyecto_id' => 6,
                 ],
                 [
-                    'nombre' => 'VISTA PRINCIPAL',
-                    'ruta_foto' => 'public/detalles-proyectos/si-05-3.png',
+                    'nombre' => 'BOLETOS COMPRADOS',
+                    'ruta_foto' => 'public/detalles-proyectos/si-05-1.png',
                     'proyecto_id' => 6,
                 ],
 

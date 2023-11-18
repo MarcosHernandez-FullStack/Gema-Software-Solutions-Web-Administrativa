@@ -39,7 +39,7 @@ class ProyectoSeeder extends Seeder
                 ],
                 [
                     /* 3 */
-                    'nombre' => 'SISTEMA PARA MATRICULAS Y NOTAS',
+                    'nombre' => 'SISTEMA PARA MATRÍCULAS Y NOTAS',
                     'fecha_implementacion' => '2022-08-07',
                     'ruta_foto' => 'public/proyectos/si-02.png',
                     'servicio_id' => 2,

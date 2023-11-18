@@ -65,16 +65,22 @@ class DetalleProyectoComponent extends Component
      //FUNCION PARA GUARDAR EN BASE DE DATOS
      public function save(){
         $this->validate();
-        $this->detalle_proyecto->proyecto_id=$this->proyecto->id;
-         //GUARDAR FOTO
-         if($this->ruta_foto){
-            $this->detalle_proyecto->ruta_foto = $this->ruta_foto->store('public/detalles-proyectos');
+        try {
+            $this->detalle_proyecto->proyecto_id=$this->proyecto->id;
+            //GUARDAR FOTO
+            if($this->ruta_foto){
+                $this->detalle_proyecto->ruta_foto = $this->ruta_foto->store('public/detalles-proyectos');
+            }
+            $this->detalle_proyecto->save();
+            session()->flash('message', 'Detalle agregado');
+            $this->mensajeForm = ['message'=>session('message'),'color'=>'success'];
+            $this->detalle_proyecto = new DetalleProyecto();
+            $this->reset('ruta_foto');
+        } catch (\Exception $e) {
+            $this->resetearMensaje('mensajeForm');
+            session()->flash('message', strtok($e->getMessage(), "."));
+            $this->mensajeForm= ['message'=>session('message'),'color'=>'danger'];
         }
-        $this->detalle_proyecto->save();
-        session()->flash('message', 'Detalle agregado');
-        $this->mensajeForm = ['message'=>session('message'),'color'=>'success'];
-        $this->detalle_proyecto = new DetalleProyecto();
-        $this->reset('ruta_foto');
     }
 
      //FUNCION PARA CONSULTAR EN BASE DE DATOS Y LLENAR LOS CAMPOS DEL FORMULARIO

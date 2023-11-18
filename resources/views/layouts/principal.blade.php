@@ -30,6 +30,10 @@
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/summernote/summernote-bs4.min.css') }}">
 
+    <!-- sweetalert -->
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/app.css') }}">
+
     @livewireStyles
 </head>
 
@@ -1539,16 +1543,82 @@
     <script src="{{ asset('assets/dist/js/demo.js') }}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     {{-- <script src="{{ asset('assets/dist/js/pages/dashboard.js')}}"></script> --}}
-
+    <script src="{{ asset('assets/dist/js/sweetalert2.all.min.js') }}"></script>
     <script>
         /* periodo_actual = document.getElementById('periodo_actual');
                                                                           periodo_actual.innerHTML = new Date().getFullYear(); */
         window.addEventListener('closeModal', event => {
             $("#modal_usuario").modal('hide');
-        })
+        });
         window.addEventListener('openModal', event => {
             $("#modal_usuario").modal('show');
-        })
+        });
+
+        //MENSAJE SWEETALERT 2
+        window.addEventListener('success', function(event) {
+            Swal.fire(
+                'Felicidades!',
+                event.detail.mensaje,
+                'success'
+            )
+        });
+        window.addEventListener('info', function(event) {
+            Swal.fire(
+                'Aviso!',
+                event.detail.mensaje,
+                'info'
+            )
+        });
+        window.addEventListener('error', function(event) {
+            Swal.fire(
+                'Error!',
+                event.detail.mensaje,
+                'error'
+            )
+        });
+        window.addEventListener('warning', function(event) {
+            Swal.fire(
+                'Cuidado!',
+                event.detail.mensaje,
+                'warning'
+            )
+        });
+        window.addEventListener('question', function(event) {
+            Swal.fire(
+                'Aviso!',
+                event.detail.mensaje,
+                'question'
+            )
+        });
+         window.addEventListener('contacto', function(event) {
+            Swal.fire(
+                'Gracias por elegirnos!',
+                event.detail.mensaje,
+                'success'
+            )
+        });
+        window.addEventListener('mostrar-confirmacion', function(event) {
+            Swal.fire({
+                title: event.detail.mensaje,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí',
+                cancelButtonText: 'No',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.emit(event.detail.evento, event.detail.data);
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire(
+                        'Acción Cancelada',
+                        'El registro no ha sufrido cambios.',
+                        'error'
+                    );
+                }
+            });
+        });
     </script>
 
 
