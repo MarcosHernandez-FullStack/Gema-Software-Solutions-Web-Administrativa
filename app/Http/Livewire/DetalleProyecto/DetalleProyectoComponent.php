@@ -28,7 +28,7 @@ class DetalleProyectoComponent extends Component
     //FUNCION PARA REGISTRAR LAS VALIDACIONES DINAMICAS
     protected function rules(){
         return [
-           'detalle_proyecto.nombre' => 'required',
+           'detalle_proyecto.nombre' => 'required|max:43',
            'ruta_foto' => 'required|image|max:2048',
         ];
    }
@@ -36,6 +36,7 @@ class DetalleProyectoComponent extends Component
     //PROPIEDAD PARA PERSONALIZAR MENSAJES DE VALIDACION
     protected $messages = [
         'detalle_proyecto.nombre.required' => 'El campo nombre es requerido',
+        'detalle_proyecto.nombre.max' => 'El campo nombre acepta como máximo 43 caracteres',
         'ruta_foto.required' => 'El campo foto es requerido',
         'ruta_foto.image' => 'El campo foto debe ser una imagen',
         'ruta_foto.max' => 'El campo foto debe tener un tamaño maximo de 2MB',
@@ -72,6 +73,8 @@ class DetalleProyectoComponent extends Component
         $this->detalle_proyecto->save();
         session()->flash('message', 'Detalle agregado');
         $this->mensajeForm = ['message'=>session('message'),'color'=>'success'];
+        $this->detalle_proyecto = new DetalleProyecto();
+        $this->reset('ruta_foto');
     }
 
      //FUNCION PARA CONSULTAR EN BASE DE DATOS Y LLENAR LOS CAMPOS DEL FORMULARIO

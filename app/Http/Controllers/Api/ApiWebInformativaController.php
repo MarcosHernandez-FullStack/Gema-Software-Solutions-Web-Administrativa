@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Proyecto;
 use Illuminate\Http\Request;
 use App\Models\Servicio;
+use App\Models\Contacto;
 use Illuminate\Support\Facades\Storage;
 
 class ApiWebInformativaController extends Controller
@@ -224,6 +225,16 @@ class ApiWebInformativaController extends Controller
             ],
         ], 200);
        
+    }
+
+
+    public function postSaveContacto(Request $request)
+    {
+        $guardado=Contacto::create($request->input('contacto'));
+        return response()->json([
+            'res' => true,
+            'contacto'=>$guardado
+        ], 200);
     }
 
 }

@@ -33,7 +33,7 @@ class DetalleProyectoSeeder extends Seeder
                 ],
 
                 [
-                    'nombre' => 'ESTADISTICAS DE MONTOS POR COBRAR Y COBRADOS',
+                    'nombre' => 'ESTADISTICAS DE MONTOS POR COBRAR',
                     'ruta_foto' => 'public/detalles-proyectos/DISEÑO WEB PARA PAGOS DE MATRÍCULAS — Arturo - 1.jpg',
                     'proyecto_id'=>2,
                 ],
@@ -66,7 +66,7 @@ class DetalleProyectoSeeder extends Seeder
                 ],
 
                 [
-                    'nombre' => 'ESTADISTICAS DE MONTOS POR COBRAR Y COBRADOS',
+                    'nombre' => 'ESTADISTICAS DE MONTOS POR COBRAR',
                     'ruta_foto' => 'public/detalles-proyectos/SISTEMA PARA PAGOS DE MATRÍCULAS — Arturo - 1.jpg',
                     'proyecto_id'=>4,
                 ],
@@ -99,7 +99,7 @@ class DetalleProyectoSeeder extends Seeder
                 ],
 
                 [
-                    'nombre' => 'ESTADISTICAS DE MONTOS POR COBRAR Y COBRADOS',
+                    'nombre' => 'ESTADISTICAS DE MONTOS POR COBRAR',
                     'ruta_foto' => 'public/detalles-proyectos/ECOMMERCE PARA PAGOS DE MATRÍCULAS — Arturo - 1.jpg',
                     'proyecto_id'=>6,
                 ],
