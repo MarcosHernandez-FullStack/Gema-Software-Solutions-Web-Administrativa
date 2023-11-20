@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Proyecto;
-use Illuminate\Http\Request;
-use App\Models\Servicio;
 use App\Models\Contacto;
+use App\Models\Proyecto;
+use App\Models\Servicio;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ApiWebInformativaController extends Controller
@@ -21,13 +21,11 @@ class ApiWebInformativaController extends Controller
         ], 200);
     }
 
-
     /* Alternativa */
     public function getHome()
     {
         $servicios = Servicio::where('estado', '=', '1')->get();
         $ultimosProyectos = Proyecto::where('estado', '=', '1')->orderBy('id', 'desc')->get();
-
 
         return response()->json([
             'res' => true,
@@ -38,8 +36,8 @@ class ApiWebInformativaController extends Controller
                     "descripcion_resumida" => $servicio->descripcion_resumida,
                     "descripcion_amplia" => $servicio->descripcion_amplia,
                     "estado" => $servicio->estado,
-                    "ruta_foto_principal" =>  env("APP_URL") . Storage::url($servicio->ruta_foto_principal),
-                    "ruta_foto_secundaria" =>  env("APP_URL") . Storage::url($servicio->ruta_foto_secundaria),
+                    "ruta_foto_principal" => env("APP_URL") . Storage::url($servicio->ruta_foto_principal),
+                    "ruta_foto_secundaria" => env("APP_URL") . Storage::url($servicio->ruta_foto_secundaria),
 
                     /* "ruta_foto" => env("APP_URL") . "storage/" . $servicio->ruta_foto, */
                 ];
@@ -53,8 +51,8 @@ class ApiWebInformativaController extends Controller
                     //"empresa_id" => $proyecto->empresa_id,
                     "fecha_implementacion" => $fecha_implementacion,
                     "estado" => $proyecto->estado,
-                    "ruta_foto" =>  env("APP_URL") . Storage::url($proyecto->ruta_foto),
-                    
+                    "ruta_foto" => env("APP_URL") . Storage::url($proyecto->ruta_foto),
+
                     "servicio" => $proyecto->servicio->nombre,
                     "empresa_cliente" => $proyecto->empresa->razon_social,
                     "sub_servicio_detalle" => $proyecto->detalles_proyecto->map(function ($detalle) {
@@ -62,8 +60,8 @@ class ApiWebInformativaController extends Controller
                             "id" => $detalle->id,
                             "estado" => $detalle->estado,
                             "nombre" => $detalle->nombre,
-                            "ruta_foto" =>   env("APP_URL") . Storage::url($detalle->ruta_foto),
-                            "proyecto_id"=>$detalle->proyecto_id,
+                            "ruta_foto" => env("APP_URL") . Storage::url($detalle->ruta_foto),
+                            "proyecto_id" => $detalle->proyecto_id,
                         ];
                     }),
 
@@ -74,21 +72,18 @@ class ApiWebInformativaController extends Controller
                     "fecha_implementacion" => $fecha_implementacion,
                     "estado" => $proyecto->estado,
                     "ruta_foto" =>  env("APP_URL") . Storage::url($proyecto->ruta_foto),
-                    
+
                     "servicio" => $proyecto->servicio->descripcion,
                     "empresa_cliente" => $proyecto->empresa_cliente,
-                    
-                    
 
                     "sub_servicio_detalle" => $proyecto->sub_servicio_detalles->map(function ($detalle) {
-                        return [
-                            "id" => $detalle->id,
-                            "estado" => $detalle->estado,
-                            "descripcion" => $detalle->descripcion,
-                            "ruta_foto" =>   env("APP_URL") . Storage::url($detalle->ruta_foto),
-                        ];
+                    return [
+                    "id" => $detalle->id,
+                    "estado" => $detalle->estado,
+                    "descripcion" => $detalle->descripcion,
+                    "ruta_foto" =>   env("APP_URL") . Storage::url($detalle->ruta_foto),
+                    ];
                     }),*/
-
 
                     /* "ruta_foto" => env("APP_URL") . "storage/" . $servicio->ruta_foto, */
                 ];
@@ -104,16 +99,19 @@ class ApiWebInformativaController extends Controller
             ->where('servicio_id', '=', $id)
             ->orderBy('id', 'desc')->get();
 
-
         return response()->json([
             "servicio" => [
                 "id" => $servicio->id,
                 "nombre" => $servicio->nombre,
                 "descripcion_amplia" => $servicio->descripcion_amplia,
                 "estado" => $servicio->estado,
-                "ruta_foto_principal" =>  env("APP_URL") . Storage::url($servicio->ruta_foto_principal),
-                "ruta_foto_secundaria" =>  env("APP_URL") . Storage::url($servicio->ruta_foto_secundaria),
-                "beneficios" => $servicio->beneficios
+                "ruta_foto_principal" => env("APP_URL") . Storage::url($servicio->ruta_foto_principal),
+                "ruta_foto_secundaria" => env("APP_URL") . Storage::url($servicio->ruta_foto_secundaria),
+                "beneficios" => $servicio->beneficios_servicios->filter(function ($beneficios_servicios) {
+                    return ($beneficios_servicios->estado == '1' && $beneficios_servicios->beneficio->estado == '1');
+                })->map(function ($beneficios_servicios) {
+                    return $beneficios_servicios->beneficio;
+                }),
             ],
 
             "listaServicios" => $listaServicios->map(function ($servicioItem) use ($servicio) {
@@ -135,17 +133,18 @@ class ApiWebInformativaController extends Controller
                     "empresa_cliente" => $proyecto->empresa->razon_social,
                     "fecha_implementacion" => $fecha_implementacion,
                     "estado" => $proyecto->estado,
-                    "ruta_foto" =>  env("APP_URL") . Storage::url($proyecto->ruta_foto),
+                    "ruta_foto" => env("APP_URL") . Storage::url($proyecto->ruta_foto),
 
-                    "sub_servicio_detalle" => $proyecto->detalles_proyecto->map(function ($detalle) {
+                    "sub_servicio_detalle" => $proyecto->detalles_proyecto->filter(function ($detalle) {
+                        return $detalle->estado == '1';
+                    })->map(function ($detalle) {
                         return [
                             "id" => $detalle->id,
                             "estado" => $detalle->estado,
                             "nombre" => $detalle->nombre,
-                            "ruta_foto" =>   env("APP_URL") . Storage::url($detalle->ruta_foto),
+                            "ruta_foto" => env("APP_URL") . Storage::url($detalle->ruta_foto),
                         ];
-                    }),
-
+                    })->values(),
 
                     /* "ruta_foto" => env("APP_URL") . "storage/" . $servicio->ruta_foto, */
                 ];
@@ -156,8 +155,8 @@ class ApiWebInformativaController extends Controller
     public function getProyectos(Request $request)
     {
         $pagina = $request->input('pagina');
-        
-        $proyectos = Proyecto::where('estado', '=', '1')->orderBy('id', 'desc')->paginate(6,['*'], 'pagina', $pagina);
+
+        $proyectos = Proyecto::where('estado', '=', '1')->orderBy('id', 'desc')->paginate(6, ['*'], 'pagina', $pagina);
 
         //return $ultimosProyectos->toJson();
         return response()->json([
@@ -171,8 +170,8 @@ class ApiWebInformativaController extends Controller
                     //"empresa_id" => $proyecto->empresa_id,
                     "fecha_implementacion" => $fecha_implementacion,
                     "estado" => $proyecto->estado,
-                    "ruta_foto" =>  env("APP_URL") . Storage::url($proyecto->ruta_foto),
-                    
+                    "ruta_foto" => env("APP_URL") . Storage::url($proyecto->ruta_foto),
+
                     "servicio" => $proyecto->servicio->nombre,
                     "empresa_cliente" => $proyecto->empresa->razon_social,
                     "sub_servicio_detalle" => $proyecto->detalles_proyecto->map(function ($detalle) {
@@ -180,8 +179,8 @@ class ApiWebInformativaController extends Controller
                             "id" => $detalle->id,
                             "estado" => $detalle->estado,
                             "nombre" => $detalle->nombre,
-                            "ruta_foto" =>   env("APP_URL") . Storage::url($detalle->ruta_foto),
-                            "proyecto_id"=>$detalle->proyecto_id,
+                            "ruta_foto" => env("APP_URL") . Storage::url($detalle->ruta_foto),
+                            "proyecto_id" => $detalle->proyecto_id,
                         ];
                     }),
 
@@ -192,7 +191,7 @@ class ApiWebInformativaController extends Controller
                 'total' => $proyectos->lastPage(),
             ],
         ], 200);
-       
+
     }
 
     public function getProyectoPorId($id)
@@ -209,8 +208,8 @@ class ApiWebInformativaController extends Controller
                 //"empresa_id" => $proyecto->empresa_id,
                 "fecha_implementacion" => $fecha_implementacion,
                 "estado" => $proyecto->estado,
-                "ruta_foto" =>  env("APP_URL") . Storage::url($proyecto->ruta_foto),
-                
+                "ruta_foto" => env("APP_URL") . Storage::url($proyecto->ruta_foto),
+
                 "servicio" => $proyecto->servicio->nombre,
                 "empresa_cliente" => $proyecto->empresa->razon_social,
                 "sub_servicio_detalle" => $proyecto->detalles_proyecto->map(function ($detalle) {
@@ -218,22 +217,21 @@ class ApiWebInformativaController extends Controller
                         "id" => $detalle->id,
                         "estado" => $detalle->estado,
                         "nombre" => $detalle->nombre,
-                        "ruta_foto" =>   env("APP_URL") . Storage::url($detalle->ruta_foto),
-                        "proyecto_id"=>$detalle->proyecto_id,
+                        "ruta_foto" => env("APP_URL") . Storage::url($detalle->ruta_foto),
+                        "proyecto_id" => $detalle->proyecto_id,
                     ];
                 }),
             ],
         ], 200);
-       
-    }
 
+    }
 
     public function postSaveContacto(Request $request)
     {
-        $guardado=Contacto::create($request->input('contacto'));
+        $guardado = Contacto::create($request->input('contacto'));
         return response()->json([
             'res' => true,
-            'contacto'=>$guardado
+            'contacto' => $guardado,
         ], 200);
     }
 
