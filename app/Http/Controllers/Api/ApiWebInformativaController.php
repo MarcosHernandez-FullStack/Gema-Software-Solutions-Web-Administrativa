@@ -111,7 +111,7 @@ class ApiWebInformativaController extends Controller
                     return ($beneficios_servicios->estado == '1' && $beneficios_servicios->beneficio->estado == '1');
                 })->map(function ($beneficios_servicios) {
                     return $beneficios_servicios->beneficio;
-                }),
+                })->values(),
             ],
 
             "listaServicios" => $listaServicios->map(function ($servicioItem) use ($servicio) {
